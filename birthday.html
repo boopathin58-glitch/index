@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Happy Birthday 🎂</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Pacifico&family=Playfair+Display:ital,wght@1,600&family=Poppins:wght@400;500;600&family=Rubik:wght@500;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { night: '#1A0B2E', dusk: '#2D1650', gold: '#D8B4FE', rose: '#E879F9', aurora: '#8B5CF6', teal: '#A78BFA' },
+  fontFamily: { display: ['Dancing Script', 'cursive'], body: ['Poppins', 'sans-serif'] }
+}}}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { background: radial-gradient(ellipse at top, #2D1650 0%, #1A0B2E 60%); color: #fff; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+  .hide { display: none !important; }
+  #stars { position: fixed; inset: 0; z-index: 0; }
+  .layer { position: relative; z-index: 1; }
+  .glow { text-shadow: 0 0 20px rgba(216,180,254,.6), 0 0 60px rgba(139,92,246,.5); }
+  .rv { opacity: 0; transform: translateY(40px) scale(.97); transition: all .9s cubic-bezier(.2,.8,.2,1); }
+  .rv.in { opacity: 1; transform: none; }
+  .rv-l { transform: translateX(-60px); } .rv-r { transform: translateX(60px); }
+  .rv-l.in, .rv-r.in { transform: none; }
+  .digit { background: linear-gradient(160deg, rgba(255,255,255,.12), rgba(255,255,255,.03)); border: 1px solid rgba(216,180,254,.35); box-shadow: 0 0 24px rgba(168,85,247,.45); }
+  .digit.flip { animation: flip .5s; }
+  @keyframes flip { 0% { transform: rotateX(0); } 50% { transform: rotateX(90deg); } 100% { transform: rotateX(0); } }
+  .caret::after { content: '|'; animation: blink 1s steps(1) infinite; color: #D8B4FE; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .heart { position: fixed; pointer-events: none; z-index: 95; animation: hrt 1.8s ease-out forwards; }
+  @keyframes hrt { to { transform: translate(var(--dx), -120px) rotate(var(--r)) scale(.4); opacity: 0; } }
+  .fheart { position: fixed; bottom: -40px; pointer-events: none; z-index: 0; opacity: .45; animation: fly linear forwards; }
+  @keyframes fly { to { transform: translate(var(--sx, 0), -115vh) rotate(25deg); } }
+  .pg-hide { max-height: 0 !important; min-height: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; overflow: hidden; opacity: 0; pointer-events: none; }
+  .pg-show { animation: pgin 1s cubic-bezier(.2,.8,.2,1); }
+  @keyframes pgin { from { opacity: 0; transform: translateY(90px) scale(.95); filter: blur(10px); } }
+  .beat { animation: beat 1s infinite; } @keyframes beat { 50% { scale: 1.12; } }
+  .font-display { font-weight: 700; line-height: 1.15; }
+  .glass { background: linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.04)); backdrop-filter: blur(10px); border: 1px solid rgba(216,180,254,.4); box-shadow: 0 8px 32px rgba(88,28,135,.55), inset 0 1px 0 rgba(255,255,255,.25); }
+  .bookbox { --pw: clamp(140px, 36vw, 270px); --ph: calc(var(--pw) * 1.4); }
+  .leaf { position: absolute; left: 50%; top: 0; width: var(--pw); height: var(--ph); transform-origin: left center; transform-style: preserve-3d; transition: transform 1s cubic-bezier(.6,0,.2,1); cursor: pointer; }
+  .leaf.flipped { transform: rotateY(-180deg); }
+  .face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .face.back { transform: rotateY(180deg); }
+  .pgf { width: 100%; height: 100%; background: #F3E8FF; color: #2D1650; padding: 10px; display: flex; flex-direction: column; box-shadow: inset 0 0 30px rgba(168,85,247,.25); }
+  .face.front .pgf { border-radius: 4px 14px 14px 4px; } .face.back .pgf { border-radius: 14px 4px 4px 14px; }
+  .pgf.cover { background: linear-gradient(145deg, #7C3AED, #4C1D95); color: #fff; align-items: center; justify-content: center; text-align: center; border: 3px solid #D8B4FE; }
+  .frame { position: relative; transform-origin: top center; animation: sway 5s ease-in-out infinite alternate; transition: scale .3s, opacity .9s cubic-bezier(.2,.8,.2,1), transform .9s cubic-bezier(.2,.8,.2,1); cursor: zoom-in; }
+  .frame:hover { scale: 1.06; }
+  @keyframes sway { from { rotate: -1.6deg; } to { rotate: 1.6deg; } }
+  .hang { position: absolute; top: -38px; left: 20%; width: 60%; height: 38px; background: linear-gradient(to bottom right, transparent calc(50% - 1px), #E9D5FF, transparent calc(50% + 1px)) left/50% 100% no-repeat, linear-gradient(to top right, transparent calc(50% - 1px), #E9D5FF, transparent calc(50% + 1px)) right/50% 100% no-repeat; }
+  .hang::after { content: ''; position: absolute; top: -5px; left: calc(50% - 5px); width: 10px; height: 10px; border-radius: 50%; background: #D8B4FE; box-shadow: 0 0 12px #D8B4FE; }
+  h2.font-display { color: #F3E8FF; text-shadow: 0 0 14px rgba(168,85,247,.55); }
+  .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: .4; z-index: 0; pointer-events: none; animation: drift 16s ease-in-out infinite alternate; }
+  @keyframes drift { to { transform: translate(18vw, 14vh) scale(1.3); } }
+  .boom { animation: boomf .5s ease-out; } @keyframes boomf { 0% { opacity: .85; } 100% { opacity: 0; } }
+  .popin { animation: popin .9s cubic-bezier(.2,1.5,.4,1); } @keyframes popin { 0% { transform: scale(.1) rotate(-8deg); opacity: 0; } 100% { transform: none; opacity: 1; } }
+  .btn { background: linear-gradient(135deg,#A855F7,#E879F9); color: #fff; font-weight: 600; border-radius: 9999px; padding: .75rem 1.75rem; transition: transform .2s; box-shadow: 0 0 22px rgba(168,85,247,.6); display: inline-block; }
+  .btn:hover { transform: scale(1.07); }
+  .mc { aspect-ratio: 1; perspective: 600px; } .mci { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .5s; }
+  .mc.open .mci, .mc.done .mci { transform: rotateY(180deg); }
+  .mcf, .mcb { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; overflow: hidden; }
+  .mcb { transform: rotateY(180deg); background: #3b1a66; } .mc.done .mcb { box-shadow: 0 0 20px #E879F9; }
+  .env { position: relative; width: min(320px, 80vw); height: 200px; background: linear-gradient(#7C3AED,#5B21B6); border-radius: 10px; cursor: pointer; box-shadow: 0 15px 40px rgba(88,28,135,.7); }
+  .flap { position: absolute; top: 0; left: 0; right: 0; height: 110px; background: #6D28D9; clip-path: polygon(0 0,100% 0,50% 100%); transform-origin: top; transition: transform .7s; }
+  .env.open .flap { transform: rotateX(180deg); }
+  .paper { background: #F3E8FF; color: #2D1650; padding: 1.5rem 1.75rem; border-radius: 14px; white-space: pre-line; box-shadow: 0 10px 40px rgba(88,28,135,.6); animation: pgin .8s; min-height: 8rem; }
+  .candle { position: relative; width: 10px; height: 46px; border-radius: 3px; background: linear-gradient(#fff,#C084FC); cursor: pointer; }
+  .flame { position: absolute; top: -22px; left: 50%; margin-left: -6px; width: 12px; height: 20px; border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%; background: radial-gradient(circle at 50% 70%, #fff3c4, #ffb020); box-shadow: 0 0 22px 6px rgba(255,176,32,.8); animation: flick .15s infinite alternate; transition: opacity .3s, transform .3s; }
+  .flame.out { opacity: 0; transform: scale(.2) translateY(10px); box-shadow: none; }
+  @keyframes flick { to { transform: scale(1.1,.92) rotate(3deg); } }
+  #cakeWrap { transition: background .8s; border-radius: 1.5rem; padding: 1rem; } #cakeWrap.dark { background: rgba(0,0,0,.45); }
+  .gift { position: relative; width: 150px; height: 150px; cursor: pointer; transition: transform .2s; } .gift:hover { transform: scale(1.06) rotate(-2deg); }
+  .gbox { position: absolute; bottom: 0; left: 0; right: 0; height: 108px; border-radius: 8px; background: linear-gradient(#A855F7,#6D28D9); }
+  .gbox::after, .lid::after { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 22px; margin-left: -11px; background: #F5D0FE; }
+  .lid { position: absolute; top: 0; left: -8px; right: -8px; height: 46px; border-radius: 8px; background: linear-gradient(#C084FC,#7C3AED); transition: all .9s cubic-bezier(.3,1.4,.5,1); z-index: 2; }
+  .lid::before { content: '🎀'; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); font-size: 2.2rem; z-index: 3; }
+  .lid.up { transform: translateY(-150px) rotate(-28deg); opacity: 0; }
+  .tk { display: inline-block; animation: mq 40s linear infinite; } @keyframes mq { to { transform: translateX(-50%); } }
+  body.nohearts .heart, body.nohearts .fheart { display: none !important; }   /* catch game page la cursor/floating hearts vendaam */
+  body { padding-bottom: 5.5rem; }
+  #navbar .nb { box-shadow: 0 6px 18px rgba(0,0,0,.35); background: linear-gradient(135deg,#A855F7,#E879F9); color: #fff; font-weight: 600; border-radius: 9999px; padding: .65rem 1.3rem; transition: transform .2s, opacity .2s; white-space: nowrap; }
+  #navbar .nb:hover:not(:disabled) { transform: scale(1.06); } #navbar .nb:disabled { opacity: .35; }
+  /* glow-less pages: letter, cake, balloons, blast */
+  body.clean h2.font-display, body.clean .glow { text-shadow: none; filter: none; }
+  body.clean .orb { display: none; }
+  body.clean .env, body.clean .paper, body.clean .balloon, body.clean .btn { box-shadow: none; }
+  body.clean .flame { box-shadow: 0 0 5px 1px rgba(255,176,32,.6); }
+  body.tfon .heart, body.tfon .fheart, body.tfon .wordpop { display: none !important; }
+  #heartCall { background: none; border: 0; outline: 0; padding: 0; line-height: 1; -webkit-tap-highlight-color: transparent; cursor: pointer; }
+  #cake .kn { position: absolute; left: 50%; top: -2.9rem; margin-left: -7px; width: 14px; opacity: 0; z-index: 6; pointer-events: none; }
+  .kn i { display: block; width: 14px; } .kn .handle { height: 2.4rem; background: #4C1D95; border-radius: 5px; }
+  .kn .blade { height: 9.4rem; background: linear-gradient(90deg,#f3f4f6,#9ca3af 60%,#fff); clip-path: polygon(0 0,100% 0,100% 94%,50% 100%,0 94%); }
+  #cutline { position: absolute; left: 50%; top: 0; width: 3px; margin-left: -1.5px; height: 8.5rem; background: #2D1650; transform: scaleY(0); transform-origin: top; z-index: 4; }
+  #cutFace { position: absolute; left: 50%; top: 0; width: 2.2rem; height: 8.5rem; opacity: 0; z-index: 2; background: linear-gradient(#FDF4FF 0 3.5rem, #F3E8FF 3.5rem); }
+  #slice { position: absolute; left: 50%; top: 0; width: 2.2rem; height: 8.5rem; z-index: 3; opacity: 0; }
+  .cut1 .kn { animation: knifeCut 1.3s ease-in forwards; } .cut1 #cutline { animation: cutDown .9s .25s forwards; }
+  .cut2 #cutline { opacity: 0; } .cut2 #cutFace { opacity: 1; } .cut2 #slice { opacity: 1; animation: sliceOut 1.1s ease-out forwards; }
+  @keyframes knifeCut { 0% { opacity: 0; transform: translateY(-9rem); } 12% { opacity: 1; } 70% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(0); } }
+  @keyframes cutDown { to { transform: scaleY(1); } }
+  @keyframes sliceOut { to { transform: translate(5.4rem, .9rem) rotate(9deg); } }
+  .ch { display: inline-block; animation: chIn .4s both; } @keyframes chIn { from { opacity: 0; transform: translateY(24px) scale(.4); } }
+  .lyw { font-family: Pacifico, 'Noto Sans', sans-serif; font-size: clamp(2.2rem, 6.2vw, 3.8rem); line-height: 1.2; color: #fff; text-shadow: 0 4px 0 #4C1D95; }
+  /* pages 3, 8, 9, 13, 14: ellaa content-um bottom bar-ku mela theriya */
+  section.tight { padding-top: .75rem !important; padding-bottom: 6.5rem !important; }
+  section.tight > h2 { font-size: clamp(1.7rem, 4.5vw, 2.6rem) !important; margin-bottom: .4rem !important; }
+  section.tight > p { margin-bottom: .6rem !important; }
+  section.tight .bookbox { --pw: min(clamp(120px, 34vw, 260px), calc((100vh - 17.5rem) / 1.4)); margin-top: 1.6rem !important; margin-bottom: 1rem !important; }
+  #wheelCv { width: auto; height: min(300px, calc(100vh - 17rem)); } #skyCv { width: auto; height: min(340px, calc(100vh - 17rem)); }
+  section.tight #cake { margin-top: 4.6rem !important; margin-bottom: .75rem !important; }
+  section.tight #cakeWrap { padding: .25rem; }
+  .joker { width: 92px; height: 130px; border-radius: 12px; background: linear-gradient(#fff,#F3E8FF); font-size: 3.6rem; display: flex; align-items: center; justify-content: center; border: 3px solid #D8B4FE; box-shadow: 0 8px 24px rgba(88,28,135,.6); animation: jk 1.6s ease-in-out infinite; cursor: pointer; }
+  @keyframes jk { 50% { transform: rotate(6deg) translateY(-6px); } }
+  #music.hint { animation: ring 1.6s infinite; border-color: #E879F9; }
+  .odd { cursor: pointer; line-height: 1.5; user-select: none; } .odd:hover { transform: scale(1.15); }
+  .mv { position: absolute; animation: wander ease-in-out infinite alternate; line-height: 1; } @keyframes wander { to { transform: translate(var(--x), var(--y)) rotate(25deg); } }
+  #joker.jkh { display: inline-block; cursor: pointer; animation: jk 1.2s ease-in-out infinite; filter: drop-shadow(0 0 10px #E879F9); }
+  .shake { animation: shake .4s; } @keyframes shake { 25% { transform: translateX(-9px); } 75% { transform: translateX(9px); } }
+  .pulse-ring { animation: ring 2s infinite; } @keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(232,121,249,.7); } 100% { box-shadow: 0 0 0 28px rgba(232,121,249,0); } }
+  /* curtains */
+  .curtain { position: fixed; top: 0; bottom: 0; width: 50%; z-index: 90; background: linear-gradient(90deg,#3B0764,#7E22CE,#3B0764); transition: transform 1.6s cubic-bezier(.7,0,.2,1); }
+  #cL { left: 0; } #cR { right: 0; } #cL.open { transform: translateX(-100%); } #cR.open { transform: translateX(100%); }
+  /* lanterns + balloons */
+  .lantern { position: absolute; bottom: -80px; width: 34px; height: 46px; border-radius: 40% 40% 30% 30%; background: radial-gradient(circle at 50% 70%, #F5D0FE, #A855F7); box-shadow: 0 0 30px #D8B4FE; animation: rise linear infinite; opacity: .85; }
+  @keyframes rise { to { transform: translateY(-120vh) translateX(40px); } }
+  .balloon { width: 64px; height: 80px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; position: relative; animation: bob 3.5s ease-in-out infinite; box-shadow: inset -8px -8px 16px rgba(0,0,0,.2), 0 0 20px rgba(255,255,255,.15); }
+  .balloon::after { content: ''; position: absolute; left: 50%; top: 100%; width: 1px; height: 40px; background: rgba(255,255,255,.4); }
+  @keyframes bob { 50% { transform: translateY(-16px) rotate(3deg); } }
+  .pop { animation: pop .45s forwards !important; } @keyframes pop { 40% { transform: scale(1.5); } 100% { transform: scale(2.4); opacity: 0; } }
+  .wordpop { position: fixed; z-index: 96; translate: -50% -50%; width: min(80vw, 520px); text-align: center; pointer-events: none; font-family: 'Rubik', sans-serif; font-weight: 700; font-size: clamp(2.2rem, 8vw, 3.8rem); line-height: 1.3; color: #fff; text-shadow: 0 4px 0 #4C1D95, 0 0 10px rgba(0,0,0,.55); animation: wordup 3.2s ease-out forwards; }
+  @keyframes wordup { 0% { transform: scale(.1); opacity: 0; } 14% { transform: scale(1.4); opacity: 1; } 28% { transform: scale(1); } 85% { opacity: 1; } 100% { transform: translateY(-110px) scale(1.1); opacity: 0; } }
+  .megaword { width: min(90vw, 760px); font-size: clamp(3.4rem, 12vw, 7.5rem); animation: wordup 7s ease-out forwards; }
+  #wish { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 600; }
+  canvas.scratch { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 1rem; touch-action: none; cursor: grab; }
+  .photo { background-size: cover; background-position: center; transition: transform .5s; }
+  .photo:hover { transform: rotate(-1.5deg) scale(1.03); }
+  /* door */
+  .scene { perspective: 1200px; }
+  .door { transform-origin: left center; transition: transform 2s cubic-bezier(.6,0,.2,1); background: linear-gradient(120deg,#4C1D95,#7C3AED); }
+  .door.open { transform: rotateY(-105deg); }
+  .light { background: radial-gradient(circle, #F3E8FF 0%, #D8B4FE 40%, #E879F9 100%); }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition-duration: .01s !important; } }
+</style>
+</head>
+<body>
+<span style="font-family:Pacifico;position:absolute;opacity:0;pointer-events:none">.</span>
+<canvas id="stars"></canvas>
+<div class="orb" style="width:42vw;height:42vw;background:#7C3AED;top:-10vw;left:-10vw"></div>
+<div class="orb" style="width:36vw;height:36vw;background:#E879F9;bottom:-12vw;right:-8vw;animation-delay:-6s"></div>
+<div class="orb" style="width:28vw;height:28vw;background:#4C1D95;top:35vh;left:40vw;animation-delay:-11s"></div>
+<div id="cL" class="curtain hide"></div><div id="cR" class="curtain hide"></div>
+
+<!-- ============ 1+2: COUNTDOWN + PUZZLE GATE ============ -->
+<section id="gate" class="layer min-h-screen flex flex-col items-center justify-center text-center px-6">
+  <div id="clock" class="text-white/90 text-2xl md:text-4xl font-display mb-8 tabular-nums"></div>
+  <h1 class="font-display text-4xl md:text-6xl glow mb-3">Unaku oru surprise wait pannudhu 🎁</h1>
+  <p id="cdText" class="text-white/70 mb-8">Indha raathiri 11:26 PM ku exact-a unlock aagum...</p>
+  <div id="countdown" class="flex gap-3 md:gap-5 mb-10"></div>
+  <p id="opening" class="hide popin font-display text-5xl md:text-8xl text-gold glow"></p>
+</section>
+
+<!-- ============ MAIN ============ -->
+<main id="site" class="hide layer">
+
+  <section class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
+    <div id="lanterns"></div>
+    <div class="text-5xl mb-3 animate-bounce">🐻‍❄️💞🧸</div>
+    <p class="mb-4 text-2xl md:text-3xl text-gold" style="font-family:Pacifico,cursive">Indha naal unakkaaga mattum ✨</p>
+    <h1 id="typed" class="font-display text-5xl md:text-8xl glow leading-tight"></h1>
+    <p class="mt-8 text-white/70">Scroll pannu, ovvoru step-layum surprise irukku</p>
+  </section>
+
+  <!-- 3 Timeline -->
+  <section class="max-w-3xl mx-auto px-6 py-24">
+    <h2 class="font-display text-4xl md:text-5xl mb-16 text-center glow rv">Nammaloda kadhai 📖</h2>
+    <div class="relative">
+      <div id="spine" class="absolute left-3 md:left-1/2 top-0 w-0.5 bg-gradient-to-b from-gold to-rose" style="height:0"></div>
+      <div id="timeline" class="space-y-16"></div>
+    </div>
+  </section>
+
+  <!-- 3 Photo book -->
+  <section class="max-w-4xl mx-auto px-6 py-24 text-center overflow-hidden">
+    <h2 class="font-display text-5xl md:text-6xl mb-2 glow rv">Namma Photo Book 📖</h2>
+    <p class="text-white/70 rv">Page mela click pannu, pakkam thiruppum</p>
+    <div class="bookbox flex justify-center mt-14 mb-8"><div style="perspective:1800px"><div id="book" class="relative" style="width:calc(var(--pw)*2);height:var(--ph);transition:transform .8s"></div></div></div>
+    <div class="flex justify-center items-center gap-4">
+      <button id="bPrev" class="glass rounded-full px-5 py-2 hover:scale-105 transition">◀ Previous photo</button>
+      <span id="bCount" class="text-white/70 text-sm w-16"></span>
+      <button id="bNext" class="glass rounded-full px-5 py-2 hover:scale-105 transition">Next photo ▶</button>
+    </div>
+  </section>
+
+  <!-- 4 Photo frames -->
+  <section class="max-w-4xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-5xl md:text-6xl mb-2 glow rv">Namma Photo Frames 🖼️</h2>
+    <p class="text-white/70 rv">Frame mela click pannaa periya-a paakalam</p>
+    <div id="frames" class="grid grid-cols-2 gap-x-8 gap-y-20 md:gap-x-16 mt-24 px-2"></div>
+  </section>
+
+  <!-- 4 Scratch -->
+  <section class="max-w-4xl mx-auto px-6 py-24">
+    <h2 class="font-display text-4xl md:text-5xl mb-2 text-center glow rv">Unna ethanala pudikum? 💌</h2>
+    <p class="text-center text-white/70 mb-10 rv">Ovvoru card-aiyum scratch panni paaru</p>
+    <div id="cards" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+  </section>
+
+  <!-- Quiz -->
+  <section class="max-w-xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-5xl md:text-6xl mb-8 glow rv">Namma pathi quiz 💘</h2>
+    <div id="quiz" class="glass rounded-3xl p-6 text-left rv"></div>
+  </section>
+
+  <!-- Memory match -->
+  <section class="max-w-3xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-5xl md:text-6xl mb-2 rv">Memory match <span id="joker" role="button" aria-label="Joker card">🃏</span></h2>
+    <p id="mmsg" class="text-white/70 mb-8 rv">Rendu rendu match pannu</p>
+    <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+      <div id="match" class="grid grid-cols-4 gap-3 w-full max-w-md"></div>
+      <div id="matchClue" class="hide glass rounded-2xl p-5 max-w-xs text-left">
+        <p class="text-gold font-medium mb-2">🔎 Clue</p>
+        <p>Ellaa pair-um match aachu! Ippo <b>mela title la</b> irukkura <b>🃏 joker card</b>-a click pannu, unakku oru video surprise irukku 🎬👆</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catch hearts -->
+  <section class="max-w-5xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-5xl md:text-6xl mb-2 rv">Hearts-a pidi 🧺</h2>
+    <p class="text-white/70 mb-2 rv">Cursor 💙 vechu vizhura 💜 hearts-a pidi. 20 pidicha dhaan Next page varum 🔒</p>
+    <p id="catchScore" class="text-gold text-xl mb-4 rv"></p>
+    <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+      <div class="relative">
+        <canvas id="catchCv" class="block mx-auto glass rounded-2xl touch-none" width="420" height="360"></canvas>
+        <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 pointer-events-none">
+          <p id="catchMsg" class="font-display text-3xl text-gold" style="text-shadow:0 2px 8px rgba(0,0,0,.7)"></p>
+          <button id="catchGo" class="btn pointer-events-auto">Start 🎮</button>
+        </div>
+      </div>
+      <p id="catchClue" class="hide glass rounded-2xl px-5 py-4 max-w-xs text-left">🔎 <b>Clue:</b> Screen-oda <b>mela right corner</b> la irukkura <b>🎵 music button</b>-a click pannu, surprise irukku!</p>
+    </div>
+  </section>
+
+  <!-- Spin wheel -->
+  <section class="max-w-xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-5xl md:text-6xl mb-8 glow rv">Lucky Wheel 🎡</h2>
+    <div class="relative inline-block"><div class="absolute left-1/2 -top-4 -translate-x-1/2 text-4xl z-10">🔻</div><canvas id="wheelCv" width="300" height="300"></canvas></div>
+    <div class="mt-6"><button id="spin" class="btn">Spin pannu 🎡</button></div>
+    <p id="wheelRes" class="font-display text-4xl text-gold mt-6 min-h-[3.5rem] glow"></p>
+  </section>
+
+  <!-- 4.5 The question -->
+  <section class="max-w-3xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-4xl md:text-6xl mb-3 glow rv">Nee unmaiyave ennai love panriya? 💜</h2>
+    <p id="askNote" class="text-white/70 mb-8 rv">Yosichu pathil sollu...</p>
+    <div id="askArea" class="flex justify-center items-center gap-8 mt-6 min-h-[8rem]">
+      <div id="yesSlot"><button id="yes" class="beat bg-gold text-night font-bold text-xl rounded-full px-10 py-4 shadow-[0_0_30px_#A855F7] transition-all duration-200">Yes 💜</button></div>
+      <button id="no" class="bg-white/10 border border-white/30 text-white text-xl rounded-full px-10 py-4">No 💔</button>
+    </div>
+    <p id="askAns" class="font-display text-3xl md:text-5xl text-gold mt-8 glow min-h-[4rem]"></p>
+  </section>
+
+  <!-- Love letter -->
+  <section class="max-w-2xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-5xl md:text-6xl mb-2 glow rv">Un kaadhal kaditham ✉️</h2>
+    <p class="text-white/70 mb-8 rv">Envelope-a click pannu</p>
+    <div id="env" class="env mx-auto"><div class="flap"></div><span class="absolute inset-0 flex items-center justify-center text-5xl">💌</span></div>
+    <p id="envHint" class="mt-5 text-gold text-lg animate-bounce">👆 Indha envelope-a click pannu, letter ulle irukku</p>
+    <div id="paper" class="hide paper font-display text-2xl md:text-3xl text-left mx-auto mt-10"></div>
+  </section>
+
+  <!-- 5 Voice / video / wishes -->
+  <section class="max-w-3xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-4xl md:text-5xl mb-8 glow rv">Un kaadhukku oru message 🎙️</h2>
+    <audio id="voice" controls class="w-full rv"></audio>
+    <video id="video" controls class="hide w-full rounded-2xl mt-6"></video>
+    <h3 class="font-display text-2xl mt-16 mb-6 text-gold rv">Unna pesa vandha ellaarum 💛</h3>
+    <div id="friends" class="grid md:grid-cols-2 gap-4 text-left"></div>
+  </section>
+
+  <!-- Night sky wish -->
+  <section class="max-w-xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-5xl md:text-6xl mb-2 glow rv">Shooting star wish 🌠</h2>
+    <p class="text-white/70 mb-6 rv">Shooting star varum bodhu screen-la edhavadhu idathula click pannu</p>
+    <canvas id="skyCv" class="block mx-auto glass rounded-2xl" width="420" height="340"></canvas>
+    <p id="skyMsg" class="font-display text-3xl text-gold mt-5 min-h-[3rem]"></p>
+  </section>
+
+  <!-- Cake -->
+  <section class="max-w-xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-5xl md:text-6xl mb-8 glow rv">Candle-a oodhu 🎂</h2>
+    <div id="cakeWrap">
+      <div id="cake" class="relative mx-auto w-64 mt-24 mb-6">
+        <div id="candles" class="absolute bottom-full left-0 right-0 flex justify-center gap-3"></div>
+        <span id="cutFace"></span><span id="cutline"></span>
+        <div id="slice"><div style="height:3.5rem;background:linear-gradient(#F5D0FE,#E879F9)"></div><div style="height:5rem;background:linear-gradient(#C084FC,#7C3AED)"></div></div>
+        <div class="kn"><i class="handle"></i><i class="blade"></i></div>
+        <div class="mx-auto w-40 h-14 rounded-t-2xl bg-gradient-to-b from-[#F5D0FE] to-[#E879F9] relative"><div class="absolute inset-x-0 top-0 h-3 bg-white/70 rounded-t-2xl"></div></div>
+        <div class="w-64 h-20 rounded-t-xl bg-gradient-to-b from-[#C084FC] to-[#7C3AED] relative"><div class="absolute inset-x-0 top-0 h-3 bg-white/70 rounded-t-xl"></div></div>
+        <div class="w-72 h-3 -mx-4 rounded-full bg-[#F3E8FF]"></div>
+      </div>
+      <p id="cakeMsg" class="font-display text-2xl text-gold min-h-[3rem]"></p>
+    </div>
+    <div class="mt-6 flex justify-center gap-3 flex-wrap"><button id="mic" class="btn">🎤 Mic on pannu</button><button id="blow" class="btn">💨 Oodhu</button></div>
+  </section>
+
+  <!-- 6 Balloons -->
+  <section class="max-w-3xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-4xl md:text-5xl mb-2 glow rv">Balloon-a thodu 🎈</h2>
+    <p class="text-white/70 mb-10 rv">Ovvoru balloon-layum oru wish olinjirukku. 5-um thodu, appuram oru periya surprise 🎆</p>
+    <div id="balloons" class="flex flex-wrap justify-center gap-8 mb-16"></div>
+    <p id="wish" class="font-display text-4xl md:text-6xl text-gold min-h-[6rem] glow"></p>
+    <p id="egg" class="mt-12 text-sm text-white/30 cursor-pointer select-none">psst... idha click pannu 🤫</p>
+  </section>
+
+  <!-- Name blast -->
+  <section class="max-w-xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-5xl md:text-6xl rv">Namma peru fireworks-la 🎆</h2>
+    <div class="min-h-[50vh] flex items-center justify-center"><button id="nameGo" class="btn text-2xl px-12 py-5">🎆 Blast pannu</button></div>
+  </section>
+
+  <!-- Obstacle game: reach me -->
+  <section class="max-w-3xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-5xl md:text-6xl mb-2 rv">Ennai thedi vaa 🏃‍♀️💜</h2>
+    <p class="text-white/70 mb-3 rv">Obstacles-a thaandi en kitta vaa. Arrow keys / WASD illa viral-a drag pannu</p>
+    <div class="relative inline-block">
+      <canvas id="gameCv" class="block mx-auto glass rounded-2xl touch-none" width="420" height="360"></canvas>
+      <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 px-4 pointer-events-none">
+        <p id="gameMsg" class="font-display text-3xl text-gold text-center" style="text-shadow:0 2px 8px rgba(0,0,0,.7)"></p>
+        <button id="gameGo" class="btn pointer-events-auto">Start 🎮</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gift box + real gift clue -->
+  <section class="max-w-xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-5xl md:text-6xl mb-2 glow rv">Un gift 🎁</h2>
+    <p class="text-white/70 mb-14 rv">Gift thirakkanum na, 🎤 <b>"I love you mama"</b> nu sollanum</p>
+    <div id="gift" class="gift mx-auto"><div id="lid" class="lid"></div><div class="gbox"></div></div>
+    <p id="giftHint" class="mt-8 text-gold text-lg min-h-[1.75rem]"></p>
+    <button id="giftMic" class="btn mt-2">🎤 Sollu: I love you mama</button>
+    <div id="giftTypeBox" class="hide mt-4"><input id="giftType" placeholder="Voice work aagala, inga type pannu..." class="w-full max-w-xs rounded-xl bg-white/10 border border-white/25 px-4 py-3 outline-none focus:border-gold"></div>
+    <div id="giftCard" class="hide glass rounded-3xl p-6 max-w-md mx-auto mt-12 text-left">
+      <p id="giftMsg" class="font-display text-3xl text-gold mb-3"></p>
+      <p class="mb-1 text-white/70">🔎 Real gift clue:</p>
+      <p id="clue" class="mb-4"></p>
+      <input id="code" placeholder="Answer podu..." class="w-full rounded-xl bg-white/10 border border-white/25 px-4 py-3 outline-none focus:border-gold mb-3">
+      <button id="codeGo" class="btn">Check pannu</button>
+      <p id="placeMsg" class="font-display text-2xl text-gold mt-4"></p>
+    </div>
+  </section>
+
+  <!-- Love in 17 languages (song sync) -->
+  <section class="max-w-3xl mx-auto px-6 py-24 text-center">
+    <h2 class="font-display text-4xl md:text-6xl mb-8 rv">Ella mozhiyilum I love you 🌍</h2>
+    <div id="lyric" class="min-h-[15rem] flex flex-col items-center justify-center"></div>
+    <div id="lyChips" class="flex flex-wrap justify-center gap-2 mt-6"></div>
+    <p id="lyEnd" class="font-display text-3xl text-gold mt-8 min-h-[3rem]"></p>
+    <button id="loveBtn" class="btn hide mt-4">▶ Song play pannu</button>
+    <div id="syncBox" class="hide glass rounded-2xl p-4 mt-6 text-left">
+      <p class="text-gold font-medium mb-1">🎚 SYNC MODE</p>
+      <p class="text-sm text-white/80 mb-3">Song-la <b>ovvoru word paadura bodhu</b> SPACE (illa keezha TAP) press pannunga. Order: lyrics padi (24 words).</p>
+      <p id="syncInfo" class="mb-2"></p>
+      <button id="syncTap" class="btn mb-3">👆 TAP</button>
+      <textarea id="syncOut" rows="3" class="w-full rounded-xl bg-black/30 border border-white/25 p-2 text-sm" readonly></textarea>
+    </div>
+    <audio id="loveSong" preload="auto"></audio>
+  </section>
+
+  <!-- 7 Final -->
+  <section class="min-h-screen flex flex-col items-center justify-start text-center px-6 pt-14 pb-44">
+    <h2 class="font-display text-4xl md:text-6xl glow mb-10 rv">Last surprise...</h2>
+    <button id="reveal" class="bg-rose text-white text-xl font-bold rounded-full px-10 py-5 pulse-ring hover:scale-105 transition">Unakku oru periya surprise iruku 🎁</button>
+    <div class="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 mt-10 w-full">
+    <div id="scene" class="scene hide relative flex-none" style="width:min(78vw,19rem);height:min(56vh,29rem)">
+      <div class="light absolute inset-0 rounded-t-[40%] flex flex-col items-center justify-center text-night">
+        <p class="font-display text-4xl px-4">Happy Birthday <span class="name"></span></p>
+        <button id="heartCall" class="beat text-7xl mt-3" aria-label="Surprise">💖</button>
+      </div>
+      <div id="door" class="door absolute inset-0 rounded-t-[40%] border-4 border-[#2E1065] flex items-center">
+        <span class="ml-auto mr-4 w-4 h-4 rounded-full bg-gold"></span>
+      </div>
+    </div>
+    <p id="final" class="hide max-w-xs md:text-left leading-relaxed" style="font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:600;font-size:clamp(1.3rem,2.4vw,2rem);color:#F5D0FE;text-shadow:0 2px 0 #4C1D95"><span class="md:hidden">👆</span><span class="hidden md:inline">👈</span> Heart-a click pannu... unakku marakka mudiyaadha oru surprise irukku 💖</p>
+    </div>
+    <div id="extras" class="hide mt-10 space-y-8 w-full max-w-xl">
+      <div id="spot"></div>
+      <div id="qrBox" class="hide"><p class="mb-2 text-white/70">Indha link QR 💜</p><div id="qr" class="inline-block p-2 bg-[#F3E8FF] rounded-xl"></div></div>
+    </div>
+  </section>
+</main>
+
+<div id="navbar" class="hide fixed bottom-0 inset-x-0 z-[60] flex items-end justify-between px-4 pb-4 pointer-events-none">
+  <button id="pvBtn" class="nb pointer-events-auto">⬅ Previous page</button>
+  <span id="pgNo" class="text-white/60 text-sm pb-3"></span>
+  <button id="nxBtn" class="nb pointer-events-auto">Next page ➡</button>
+</div>
+<button id="music" class="hide fixed top-4 right-4 z-50 bg-white/10 backdrop-blur border border-white/25 rounded-full w-11 h-11">🎵</button>
+<audio id="bgm" loop></audio>
+<div id="flash" class="fixed inset-0 z-[99] pointer-events-none opacity-0" style="background:radial-gradient(circle,#F3E8FF,#A855F7 55%,transparent 80%)"></div>
+<div id="callOv" class="hide fixed inset-0 z-[130] flex flex-col items-center justify-center text-center p-6" style="background:rgba(26,11,46,.96)">
+  <div class="text-8xl pulse-ring rounded-full w-40 h-40 flex items-center justify-center" style="background:linear-gradient(135deg,#A855F7,#E879F9)">📞</div>
+  <p class="font-display text-5xl mt-8 text-gold">Video call connect aagudhu...</p>
+  <p id="callHint" class="text-white/80 mt-3 text-lg max-w-sm"></p>
+  <button id="callClose" class="btn mt-8">Close</button>
+</div>
+<div id="lb" class="hide fixed inset-0 z-[120] bg-black/85 flex flex-col items-center justify-center p-6 cursor-zoom-out"></div>
+<canvas id="fx" class="fixed inset-0 pointer-events-none z-[100]"></canvas>
+<div id="tfBack" class="fixed inset-0 z-[96] pointer-events-none" style="background:rgba(26,11,46,.9);opacity:0;transition:opacity .6s"></div>
+<canvas id="tf" class="fixed inset-0 pointer-events-none z-[97]"></canvas>
+
+<script>
+/* ================= CONFIG: ithai mattum maathu ================= */
+const CONFIG = {
+  name: "Priya",
+  dodgeSeconds: 30,                                // Yes button ethana second odum, appuram pidikkalam
+  countdown: true,                                 // true = birthday time varra varai lock
+  birthday: "2026-10-05T23:26:00",                 // Oct 5, 11:26 PM
+  music: "", voice: "", video: "",                 // eg "song.mp3", "message.mp3", "wishes.mp4"
+  memories: [
+    { date: "Jan 2023", text: "Mudhal murai paartha naal. Andha smile ippavum nyabagam irukku.", img: "photo1.jpg" },
+    { date: "Aug 2023", text: "Namma first date. Cafe la 3 hours pesittu irundhom.", img: "photo2.jpg" },
+    { date: "Feb 2024", text: "Oru chinna trip, periya memories.", img: "photo3.jpg" },
+    { date: "Ippo", text: "Innum neraiya kadhai baaki irukku.", img: "photo4.jpg" }
+  ],
+  reasons: [
+    "Un sirippu 😊", "Nee kaattura care 💛", "Un kovam kooda cute 😅", "Nee en best friend 🤝",
+    "Un kitta pesina time maraiyum ⏳", "Nee nee-a irukradhu 💫", "Un kural 🎶", "Nee tharra dhairiyam 💪",
+    "Un kannu pesum 👀", "Nee en nimmadhi 🌙", "Un kutti kutti sandai 😜", "Nee en ulagam 🌍"
+  ],
+  book: [                                          // Photo book pages (ethana venumnaalum serkalam)
+    { img: "book1.jpg", cap: "Namma first selfie 🤳" },
+    { img: "book2.jpg", cap: "Andha cafe evening ☕" },
+    { img: "book3.jpg", cap: "Oru chinna trip 🌴" },
+    { img: "book4.jpg", cap: "Un sirippu 😊" },
+    { img: "book5.jpg", cap: "Festival day 🪔" },
+    { img: "book6.jpg", cap: "Ippo varaikum 💜" }
+  ],
+  frames: [                                        // Photo frames (4 or 6 nalladhu)
+    { img: "frame1.jpg", cap: "Favourite photo 💜" },
+    { img: "frame2.jpg", cap: "Best memory ✨" },
+    { img: "frame3.jpg", cap: "Nee + Naan 💞" },
+    { img: "frame4.jpg", cap: "Forever 🌙" }
+  ],
+  letter: "Dear {name},\n\nUnna paartha andha first naal-la irundhu en life ye maariduchu.\nUn sirippu, un kovam, un care ellaame enakku romba pidikkum.\n\nIndha birthday la unaku ellaa santhoshamum kidaikkanum.\nNaan eppovum un kooda irukken.\n\nEppovum unnoda,\nYour ❤️",
+  quiz: [
+    { q: "Naan favourite colour enna?", o: ["Purple 💜", "Red ❤️", "Blue 💙", "Black 🖤"], a: 1, roast: "Idhu kooda theriyalaya? 😂" },
+    { q: "Namma first meet panna idam?", o: ["Beach 🏖️", "Cafe ☕", "College 🎓", "Temple 🛕"], a: 3, roast: "Nyabagam illaiya? 🥺" },
+    { q: "Enakku pidicha food?", o: ["Biryani 🍗", "Dosa 🥞", "Pizza 🍕", "Ice cream 🍦"], a: 3, roast: "Aiyo thappu 😜" },
+    { q: "Naan unna enna nu koopiduven?", o: ["Chellam 💜", "Kutty", "Thangam", "Pondatti 😂"], a: 0, roast: "Konjam yosi 😅" }
+  ],                                               // a = correct answer index (0 la irundhu)
+  match: ["m1.jpg", "m2.jpg", "m3.jpg", "m4.jpg", "m5.jpg", "m6.jpg"],   // 6 photos (illa na emoji varum)
+  game: { playerImg: "her.jpg", goalImg: "him.jpg", levels: 4, win: "Kandupidichuttiye! Naan inga dhaan, ennaikum un kooda 💜" },   // playerImg = un lover face, goalImg = un face (illana emoji varum)
+  catchGoal: 20, catchWin: "Super! Un kaila en manasu 💜",
+  wheel: ["Periya hug 🤗", "Dinner date 🍽️", "Oru kiss 😘", "Surprise gift 🎁", "Favourite movie 🎬", "Oru request 🙏"],
+  wishMsg: "Un wish kandippa nadakkum 💜",
+  gift: { msg: "Surprise! 🎉", clue: "Gift oru idathula olinjirukku. Dhinam kaalaila nee thirakkura idam, adhula thaan irukku. Adhu enna?", code: "fridge", place: "Correct! Gift fridge pakkathula irukku 🎁" },
+  callLink: "",                                    // BEST: WhatsApp la Calls tab > "Create call link" > Video > copy panni inga podunga (https://call.whatsapp.com/video/...). Illa Google Meet link-um podalam
+  jitsiRoom: "",                                   // (optional) callLink illa, WhatsApp-um vendaam na: "MyRoom123" nu ezhudhunga, https://meet.jit.si/MyRoom123 la video call
+  callText: "Video call pannalaama? 💜 Happy Birthday!",   // (WhatsApp chat fallback message)   // heart click panna WhatsApp la irukkum message
+  phone: "916385564796",                           // country code oda number (video call button), venam na ""
+  spotify: "",                                     // eg "https://open.spotify.com/embed/track/XXXX"
+  siteUrl: "",                                     // website link (QR code varum), venam na ""
+  secret: "Naan unna romba romba love panren. Indha surprise un kitta mattum dhaan 💜 Happy Birthday!",
+  loveSong: "love.mp3",                            // song file (HTML kooda same folder la irukkanum). Idhu 18-vadhu page la mattum play aagum
+  songStart: 0.23, songStep: 0.605,                // song analysis: 24 words, ovvonnum 0.605s gap-la, 0.23s la modhal word. (14.6s song)
+  songCues: [],                                    // [] = automatic (mela irukkura timing). Exact venum na: URL la ?sync serthu tap panni vara number-a ingae paste pannunga
+  songLines: [                                     // song lyrics, line by line. w = word, lang = mozhi, n = original ezhuthu
+    [{ w: "Asku", lang: "Turkish" }, { w: "laska", lang: "Czech" }, { w: "amour", lang: "French" }, { w: "amour", lang: "French" }],
+    [{ w: "Aii", lang: "Chinese", n: "爱" }, { w: "asth" }, { w: "asth" }, { w: "leibe", lang: "German" }],
+    [{ w: "Ahaava", lang: "Hebrew", n: "אהבה" }, { w: "bolingo", lang: "Lingala" }, { w: "cintha", lang: "Indonesian" }, { w: "cintha", lang: "Indonesian" }],
+    [{ w: "Ishq", lang: "Urdu", n: "عشق" }, { w: "ishq", lang: "Urdu", n: "عشق" }, { w: "meile", lang: "Lithuanian" }],
+    [{ w: "Love", lang: "English" }, { w: "ishtam", lang: "Telugu" }, { w: "premam", lang: "Malayalam" }],
+    [{ w: "Pyaro", lang: "Hindi" }, { w: "pyaro", lang: "Hindi" }],
+    [{ w: "Oru", lang: "Tamil", n: "ஒரு" }, { w: "kaadhal", lang: "Tamil", n: "காதல்" }, { w: "undhan", lang: "Tamil", n: "உந்தன்" }, { w: "melae", lang: "Tamil", n: "மேலே" }]
+  ],
+  jokerMsg: "Joker card-a kandupidichuttiye! 🃏 Unakku oru surprise kaththirukku: indha website mudinjadhum oru periya treat naan tharen. Enna venum nu yosichu vei 😘",   // (ippo use aagala: joker click-la video varum)
+  musicMsg: "Music button-a kandupidichuttiye 🎵 Surprise: unakkaaga oru song naan paaduven, nee kekka ready-a irundha sollu 💜",   // (ippo use aagala: music click-la video varum)
+  surpriseVideo: "surprise_sample.mp4",           // Joker (page 7) + Music (page 8) click panna varum video. Unga video-va same folder la podu, peru-a inga maathunga
+  oddMsg: "Nee romba sharp! 🥰 Surprise: un kitta mattum dhaan ennoda ellaa secret-um solluven 💜",   // page 13 surprise
+  friends: [
+    { who: "Amma", msg: "Nee eppovum santhoshama irukkanum kanna ❤️" },
+    { who: "Friend 1", msg: "Best friend ku best birthday! 🎉" },
+    { who: "Akka / Anna", msg: "Always proud of you da 🤗" },
+    { who: "Friend 2", msg: "Party eppo? 😂🎂" }
+  ],
+  balloonWishes: [                                 // 5 balloons la varum sentences (fireworks text-a idhula vekkaadheenga)
+    "Ellaa kanavum nijama aagattum ✨", "Naan eppovum un kooda dhaan 🤗", "Indha varusham un sirippu perusa irukkattum 😁",
+    "Unaku pudicha ellaam kidaikattum 🎁", "Nee romba special 💖"
+  ],
+  him: "Xxxx",                                     // Mr ... (mapillai peru)
+  coupleLines: ["Mr {him}", "weds", "Mrs {name}"],    // page 16 fireworks text ({him} = mapillai peru, {name} = ponnu peru)
+  fireworkLines: ["I love you {name} ♥", "Unna vittu poga maatten"],   // fireworks la mattum varum text
+};
+/* ================================================================ */
+
+const $ = id => document.getElementById(id);
+const rnd = (a, b) => Math.random() * (b - a) + a;
+const completed = new Set();   // task mudicha pages (Next page unlock aagum)
+function complete(id) { const s = $(id).closest('section'); if (!completed.has(s)) { completed.add(s); updateNav(); } }
+document.querySelectorAll('.name').forEach(e => e.textContent = CONFIG.name);
+
+/* ---------- Starfield + shooting stars ---------- */
+const sc = $('stars'), sx = sc.getContext('2d'); let stars = [], shoots = [], mx = 0, my = 0;
+function sfit() { sc.width = innerWidth; sc.height = innerHeight; stars = Array.from({ length: 140 }, () => ({ x: rnd(0, sc.width), y: rnd(0, sc.height), r: rnd(.4, 1.8), t: rnd(0, 6), z: rnd(.2, 1) })); }
+sfit(); addEventListener('resize', sfit);
+addEventListener('mousemove', e => { mx = (e.clientX / innerWidth - .5); my = (e.clientY / innerHeight - .5); });
+(function drawStars() {
+  sx.clearRect(0, 0, sc.width, sc.height);
+  stars.forEach(s => { s.t += .03; sx.globalAlpha = .4 + .6 * Math.abs(Math.sin(s.t)); sx.fillStyle = '#fff'; sx.beginPath(); sx.arc(s.x - mx * 30 * s.z, s.y - my * 30 * s.z, s.r, 0, 7); sx.fill(); });
+  if (Math.random() < .008) shoots.push({ x: rnd(0, sc.width), y: rnd(0, sc.height / 2), l: 0 });
+  shoots = shoots.filter(s => s.l < 40);
+  shoots.forEach(s => { s.l++; s.x += 14; s.y += 7; sx.globalAlpha = 1 - s.l / 40; sx.strokeStyle = '#D8B4FE'; sx.lineWidth = 2; sx.beginPath(); sx.moveTo(s.x, s.y); sx.lineTo(s.x - 60, s.y - 30); sx.stroke(); });
+  requestAnimationFrame(drawStars);
+})();
+
+/* ---------- Clock + Countdown ---------- */
+const target = new Date(CONFIG.birthday).getTime();
+const skip = !CONFIG.countdown || location.search.includes('preview');
+let prev = [], entered = false;
+function tick() {
+  const n = new Date();
+  $('clock').textContent = n.toLocaleString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const diff = target - n.getTime();
+  if (skip || diff <= 0) { $('countdown').classList.add('hide'); $('cdText').classList.add('hide'); $('opening').textContent = `Happy Birthday ${CONFIG.name}! 🎂💥`; $('opening').classList.remove('hide'); if (!entered) { entered = true; cornerBlast(); setTimeout(tryUnlock, 4200); } return true; }
+  const v = [diff / 864e5, diff / 36e5 % 24, diff / 6e4 % 60, diff / 1e3 % 60].map(x => String(Math.floor(x)).padStart(2, '0'));
+  const L = ['Naal', 'Mani', 'Nimisham', 'Vinadi'];
+  $('countdown').innerHTML = v.map((d, i) => `<div class="digit ${prev[i] !== undefined && prev[i] !== d ? 'flip' : ''} rounded-3xl w-[4.5rem] md:w-24 py-4"><div class="font-display text-3xl md:text-5xl glow">${d}</div><div class="text-xs text-white/60 mt-1">${L[i]}</div></div>`).join('');
+  prev = v; return false;
+}
+tick(); const clk = setInterval(() => { if (tick()) clearInterval(clk); }, 1000);
+
+/* ---------- Open button -> curtains ---------- */
+function tryUnlock() {
+  ['cL', 'cR'].forEach(i => $(i).classList.remove('hide'));
+  setTimeout(() => {
+    $('gate').classList.add('hide'); $('site').classList.remove('hide'); $('music').classList.remove('hide'); $('navbar').classList.remove('hide'); scrollTo(0, 0);
+    $('cL').classList.add('open'); $('cR').classList.add('open');
+    setTimeout(() => { startTyping(); cornerBlast(); fireworks(); lanterns(); observe(); }, 900);
+    setTimeout(() => ['cL', 'cR'].forEach(i => $(i).classList.add('hide')), 1800);
+  }, 100);
+  if (CONFIG.music) { $('bgm').src = CONFIG.music; $('bgm').volume = .4; $('bgm').play().catch(() => {}); }
+}
+
+/* ---------- Hero ---------- */
+function startTyping() {
+  const t = `Happy Birthday ${CONFIG.name} 🎂`; let i = 0;
+  clearInterval(window._ty); $('typed').textContent = '';
+  const h = window._ty = setInterval(() => { $('typed').textContent = t.slice(0, ++i); if (i >= t.length) clearInterval(h); }, 100);
+}
+function lanterns() {
+  $('lanterns').innerHTML = Array.from({ length: 14 }, () => `<span class="lantern" style="left:${rnd(2, 96)}%;animation-duration:${rnd(9, 18)}s;animation-delay:${rnd(0, 8)}s;transform:scale(${rnd(.6, 1.3)})"></span>`).join('');
+}
+
+/* ---------- Timeline ---------- */
+$('timeline').innerHTML = CONFIG.memories.map((m, i) => `
+  <div class="rv ${i % 2 ? 'rv-r' : 'rv-l'} pl-10 md:pl-0 md:w-1/2 ${i % 2 ? 'md:ml-auto md:pl-10' : 'md:pr-10 md:text-right'} relative">
+    <span class="absolute left-[7px] md:left-auto ${i % 2 ? 'md:-left-[7px]' : 'md:-right-[7px]'} top-2 w-4 h-4 rounded-full bg-gold shadow-[0_0_16px_#D8B4FE]"></span>
+    <p class="text-gold font-bold">${m.date}</p>
+    <div class="photo rounded-2xl h-52 my-3 bg-dusk border border-white/15" style="background-image:url('${m.img}')"></div>
+    <p class="text-white/85">${m.text}</p>
+  </div>`).join('');
+addEventListener('scroll', () => {
+  const t = $('timeline').getBoundingClientRect();
+  $('spine').style.height = Math.max(0, Math.min(t.height, innerHeight * .7 - t.top)) + 'px';
+});
+
+/* ---------- Photo helper (photo illanaa 💜 theriyum) ---------- */
+const pic = (img, cls = '') => `<div class="relative overflow-hidden ${cls}" style="background:#3b1a66"><span class="absolute inset-0 flex items-center justify-center text-4xl">💜</span><div class="absolute inset-0 bg-cover bg-center" style="background-image:url('${img}')"></div></div>`;
+
+/* ---------- Photo book (page flip) ---------- */
+const sides = [{ cover: 1 }, ...CONFIG.book, { end: 1 }]; if (sides.length % 2) sides.push({});
+const nLeaf = sides.length / 2; let bi = 0;
+const faceHTML = x => x.cover ? `<div class="pgf cover"><div class="font-display text-4xl">Namma<br>Photo Book</div><div class="text-5xl my-3">💜</div><p class="text-sm opacity-80">${CONFIG.name}</p></div>`
+  : x.end ? `<div class="pgf" style="align-items:center;justify-content:center;text-align:center"><div class="font-display text-4xl">The End?</div><p class="mt-2">Kadhai innum mudiyala 💜</p></div>`
+  : x.img ? `<div class="pgf">${pic(x.img, 'flex-1 rounded-lg')}<p class="font-display text-xl text-center mt-2">${x.cap}</p></div>` : '<div class="pgf"></div>';
+$('book').innerHTML = '<div id="bookBase" class="absolute top-0 bottom-0 rounded-xl" style="background:#3B0764;box-shadow:0 20px 60px rgba(88,28,135,.8);z-index:0;left:50%;width:50%;transition:all .8s"></div>' +
+  Array.from({ length: nLeaf }, (_, j) => `<div class="leaf" data-j="${j}"><div class="face front">${faceHTML(sides[2 * j])}</div><div class="face back">${faceHTML(sides[2 * j + 1])}</div></div>`).join('');
+function bookUpdate() {
+  document.querySelectorAll('.leaf').forEach((l, j) => { l.classList.toggle('flipped', j < bi); l.style.zIndex = (j < bi ? j : nLeaf - j) + 1; });
+  $('book').style.transform = bi === 0 ? 'translateX(calc(var(--pw) / -2))' : bi === nLeaf ? 'translateX(calc(var(--pw) / 2))' : 'none';
+  $('bookBase').style.left = bi === 0 ? '50%' : '0'; $('bookBase').style.width = bi === 0 ? '50%' : '100%';
+  $('bCount').textContent = `${bi}/${nLeaf}`;
+}
+const bNext = () => { if (bi < nLeaf) { bi++; bookUpdate(); heartBurst(innerWidth / 2, innerHeight / 2, 6); if (bi === nLeaf) complete('book'); } };
+const bPrev = () => { if (bi > 0) { bi--; bookUpdate(); } };
+$('bNext').onclick = bNext; $('bPrev').onclick = bPrev;
+document.querySelectorAll('.leaf').forEach(l => l.onclick = () => (+l.dataset.j < bi ? bPrev() : bNext()));
+bookUpdate();
+
+/* ---------- Photo frames + lightbox ---------- */
+const shapes = ['rounded-md aspect-[4/5]', 'rounded-t-[50%] rounded-b-md aspect-[4/5]', 'rounded-full aspect-square', 'rounded-3xl aspect-[4/5]'];
+$('frames').innerHTML = CONFIG.frames.map((f, i) => `
+  <figure class="frame rv" data-i="${i}" style="animation-delay:${-i * 1.3}s">
+    <div class="hang"></div>
+    <div class="p-3 ${shapes[i % 4]} shadow-[0_15px_40px_rgba(88,28,135,.7)]" style="background:linear-gradient(135deg,#F3E8FF,#A855F7 40%,#D8B4FE 60%,#7C3AED)">
+      ${pic(f.img, 'w-full h-full ' + shapes[i % 4].split(' ')[0] + ' border-[6px] border-[#F3E8FF]')}
+    </div>
+    <figcaption class="font-display text-2xl mt-3 text-gold">${f.cap}</figcaption>
+  </figure>`).join('');
+const seenFrames = new Set();
+document.querySelectorAll('.frame').forEach(fr => fr.onclick = () => {
+  const f = CONFIG.frames[fr.dataset.i]; seenFrames.add(fr.dataset.i); if (seenFrames.size === CONFIG.frames.length) complete('frames');
+  $('lb').innerHTML = pic(f.img, 'w-full max-w-md aspect-[4/5] rounded-2xl border-[10px] border-[#F3E8FF]') + `<p class="font-display text-3xl text-gold mt-5">${f.cap}</p><p class="text-white/50 text-sm mt-2">(close panna click pannu)</p>`;
+  $('lb').classList.remove('hide'); heartBurst(innerWidth / 2, innerHeight / 2, 16);
+});
+$('lb').onclick = closeLb;
+
+/* ---------- Scratch cards ---------- */
+const scratched = new Set();
+const pal = ['#D8B4FE', '#E879F9', '#A78BFA', '#8B5CF6'];
+CONFIG.reasons.forEach((r, n) => {
+  const box = document.createElement('div');
+  box.className = 'rv glass relative h-32 rounded-2xl flex items-center justify-center p-3 text-center font-medium';
+  box.innerHTML = `<span>${r}</span><canvas class="scratch"></canvas>`;
+  $('cards').appendChild(box);
+  const c = box.querySelector('canvas'), ctx = c.getContext('2d'); let down = false, done = false;
+  const paint = () => { c.width = box.offsetWidth; c.height = box.offsetHeight; const g = ctx.createLinearGradient(0, 0, c.width, c.height); g.addColorStop(0, pal[n % 4]); g.addColorStop(1, '#fff'); ctx.fillStyle = g; ctx.fillRect(0, 0, c.width, c.height); ctx.fillStyle = '#1A0B2E'; ctx.font = '600 16px Poppins'; ctx.textAlign = 'center'; ctx.fillText('Scratch me ✨', c.width / 2, c.height / 2 + 5); };
+  c._reset = () => { done = false; scratched.delete(n); c.style.transition = 'none'; c.style.opacity = 1; c.style.pointerEvents = 'auto'; paint(); };   // page refresh aagum bodhu thirumba cover   // page theriyum bodhu paint aagum (hidden la width 0)
+  const scratch = e => { if (!down || done) return; const b = c.getBoundingClientRect(), p = e.touches ? e.touches[0] : e; ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath(); ctx.arc(p.clientX - b.left, p.clientY - b.top, 20, 0, 7); ctx.fill(); };
+  const check = () => { const d = ctx.getImageData(0, 0, c.width, c.height).data; let k = 0; for (let i = 3; i < d.length; i += 40) if (!d[i]) k++; if (k / (d.length / 40) > .45) { done = true; c.style.transition = 'opacity .5s'; c.style.opacity = 0; c.style.pointerEvents = 'none'; burst(innerWidth / 2, innerHeight / 2, 30); scratched.add(n); if (scratched.size === CONFIG.reasons.length) complete('cards'); } };
+  c.onmousedown = c.ontouchstart = e => { down = true; scratch(e); }; c.onmousemove = c.ontouchmove = scratch;
+  addEventListener('mouseup', () => { if (down) { down = false; check(); } }); c.ontouchend = () => { down = false; check(); };
+});
+
+/* ---------- The question: Yes button runs away for 30 seconds ---------- */
+let dodging = true, started = false, lastD = 0, dodgeTimer;
+function resetYes() { const y = $('yes'); y.style.position = ''; y.style.left = ''; y.style.top = ''; y.style.zIndex = ''; }
+function dodge(e) {
+  if (!dodging || Date.now() - lastD < 180) return;
+  lastD = Date.now(); e && e.preventDefault && e.preventDefault();
+  const y = $('yes'), r = y.getBoundingClientRect();
+  if (!started) { started = true; dodgeTimer = setTimeout(() => { dodging = false; $('yes').textContent = 'Seri seri, pidichuko 😭💜'; }, CONFIG.dodgeSeconds * 1000); }
+  if (y.style.position !== 'fixed') { $('yesSlot').style.width = r.width + 'px'; $('yesSlot').style.height = r.height + 'px'; }
+  heartBurst(r.left + r.width / 2, r.top + r.height / 2, 10);
+  y.style.position = 'fixed'; y.style.zIndex = 70;
+  y.style.left = rnd(10, innerWidth - y.offsetWidth - 10) + 'px';
+  y.style.top = rnd(10, innerHeight - y.offsetHeight - 10) + 'px';
+  const notes = ['Pidikka mudiyuma? 😜', 'Aiyo thappichuduchu! 😂', 'Konjam vega-a try pannu 🏃', 'Yes ku bayama? 😏', 'Innum oru thadavai... 🤭', 'Naan inga dhaan 😝'];
+  y.textContent = notes[Math.floor(rnd(0, notes.length))];   // message Yes button kulla
+}
+addEventListener('mousemove', e => {
+  if (!dodging || pages[cur] !== $('askArea').closest('section')) return;
+  const r = $('yes').getBoundingClientRect();
+  if (Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)) < r.width / 2 + 45) dodge();
+});
+$('yes').addEventListener('touchstart', dodge, { passive: false });
+$('yes').onclick = () => {
+  complete('askArea');
+  $('yesSlot').classList.add('hide'); $('no').classList.add('hide'); $('askNote').classList.add('hide');
+  $('askAns').textContent = `Enakku theriyum ${CONFIG.name}... naanum unna love panren 💜`; fireworks(); heartBurst(innerWidth / 2, innerHeight / 2, 40);
+};
+$('no').onclick = () => { $('askNote').textContent = 'Un manasu ippadi sollala... thirumba yosi 🥺'; $('no').style.transform = 'scale(.8)'; };
+function resetAsk() {   // page thirumba vandha Yes thirumba odum
+  clearTimeout(dodgeTimer); dodging = true; started = false; resetYes(); $('yes').textContent = 'Yes 💜';
+  $('yesSlot').classList.remove('hide'); $('yesSlot').style.width = ''; $('yesSlot').style.height = '';
+  $('no').classList.remove('hide'); $('no').style.transform = ''; $('askNote').classList.remove('hide');
+  $('askNote').textContent = 'Yosichu pathil sollu...'; $('askAns').textContent = '';
+}
+
+/* ================= NEW SURPRISES ================= */
+const sec = id => $(id).closest('section');
+const live = id => pages[cur] === sec(id);
+
+['book', 'catchCv', 'wheelCv', 'skyCv', 'cake', 'gameCv'].forEach(id => sec(id).classList.add('tight'));
+
+/* ---- Quiz ---- */
+let qi = 0, qs = 0, quizPerfect = false, returnPage = null;
+function renderQuiz() {
+  const q = CONFIG.quiz[qi], box = $('quiz');
+  if (!q) {
+    const perfect = qs === CONFIG.quiz.length; if (perfect) quizPerfect = true; complete('quiz');
+    box.innerHTML = `<div class="text-center"><p class="font-display text-5xl text-gold">${qs}/${CONFIG.quiz.length}</p>` + (perfect
+      ? `<p class="mt-4 text-lg">Ellaa answer-um correct! 💜<br>Nee dhaan en soulmate 🥰</p><p class="mt-4 text-gold font-medium">🎁 Oru surprise irukku! Hero page-ku po, "Happy Birthday" title-a <b>5 thadavai click</b> pannu.</p><button id="toHero" class="btn mt-5">Hero page-ku po 🏠</button>`
+      : `<p class="mt-4">Ellaa answer-um correct-a sollanum surprise paaka 😜</p><button id="retryQ" class="btn mt-5">Thirumba try pannu 🔁</button>`) + '</div>';
+    if (perfect) { cornerBlast(); $('toHero').onclick = () => { returnPage = cur; showPage(0); }; } else $('retryQ').onclick = () => { qi = 0; qs = 0; renderQuiz(); };
+    return;
+  }
+  box.innerHTML = `<p class="text-sm text-white/60">Question ${qi + 1}/${CONFIG.quiz.length}</p><p class="font-display text-3xl my-3">${q.q}</p>` +
+    q.o.map((o, k) => `<button class="qo block w-full text-left glass rounded-xl px-4 py-3 mb-2" data-k="${k}">${o}</button>`).join('') + '<p id="qf" class="mt-2 min-h-[1.5rem] font-medium"></p>';
+  box.querySelectorAll('.qo').forEach(b => b.onclick = () => {
+    const ok = +b.dataset.k === q.a; box.querySelectorAll('.qo').forEach(x => x.disabled = true);
+    b.style.outline = '2px solid ' + (ok ? '#A78BFA' : '#E879F9');
+    $('qf').textContent = ok ? 'Correct! 💜' : (q.roast || 'Aiyo thappu 😂');
+    if (ok) { qs++; const r = b.getBoundingClientRect(); heartBurst(r.left + r.width / 2, r.top, 14); }
+    setTimeout(() => { qi++; renderQuiz(); }, 1400);
+  });
+}
+
+function closeLb() { const v = document.querySelector('#lb video'); if (v) v.pause(); $('lb').classList.add('hide'); }
+function showVideo() {   // Joker (page 7) / Music (page 8) click-la surprise video
+  $('lb').innerHTML = `<div class="glass rounded-3xl p-5 text-center w-full" style="max-width:34rem" onclick="event.stopPropagation()"><p class="font-display text-4xl text-gold mb-3">🎬 Un surprise video</p>${CONFIG.surpriseVideo ? `<video src="${CONFIG.surpriseVideo}" controls autoplay playsinline class="w-full rounded-2xl" style="max-height:62vh"></video>` : '<p class="py-10 text-white/70">Video inga varum 🎬</p>'}<button class="btn mt-4" onclick="closeLb()">Close 💜</button></div>`;
+  $('lb').classList.remove('hide'); cornerBlast(); fireworks(); heartBurst(innerWidth / 2, innerHeight / 2, 40);
+}
+function showSurprise(icon, title, msg) {   // clue-ku surprise popup (page 13 hunt)
+  $('lb').innerHTML = `<div class="glass rounded-3xl p-8 max-w-md text-center" onclick="event.stopPropagation()"><p class="text-6xl mb-3">${icon}</p><p class="font-display text-4xl text-gold mb-3">${title}</p><p class="text-lg">${msg}</p><button class="btn mt-4" onclick="closeLb()">Close 💜</button></div>`;
+  $('lb').classList.remove('hide'); cornerBlast(); fireworks(); heartBurst(innerWidth / 2, innerHeight / 2, 40);
+}
+$('joker').onclick = () => {
+  if (mPairs < CONFIG.match.length) { $('mmsg').textContent = 'Modhalla ellaa pair-um match pannu 😜'; return; }
+  showVideo();   // all pairs matched -> joker plays the video
+};
+
+/* ---- Memory match ---- */
+const EM = ['🌸', '🎂', '🌙', '⭐', '🎁', '🦋'];
+let mFirst = null, mLock = false, mPairs = 0;
+function buildMatch() {
+  mFirst = null; mLock = false; mPairs = 0; $('mmsg').textContent = 'Rendu rendu match pannu'; $('matchClue').classList.add('hide'); $('joker').classList.remove('jkh');
+  const deck = [...CONFIG.match.map((img, i) => ({ img, e: EM[i % 6] })), ...CONFIG.match.map((img, i) => ({ img, e: EM[i % 6] }))].sort(() => Math.random() - .5);
+  $('match').innerHTML = deck.map(c => `<button class="mc" data-k="${c.e}"><div class="mci"><div class="mcf glass">💜</div><div class="mcb"><span class="absolute inset-0 flex items-center justify-center text-4xl">${c.e}</span><div class="absolute inset-0 bg-cover bg-center" style="background-image:url('${c.img}')"></div></div></div></button>`).join('');
+  document.querySelectorAll('.mc').forEach(b => b.onclick = () => {
+    if (mLock || b.classList.contains('open') || b.classList.contains('done')) return;
+    b.classList.add('open');
+    if (!mFirst) { mFirst = b; return; }
+    if (mFirst.dataset.k === b.dataset.k) {
+      [mFirst, b].forEach(x => { x.classList.remove('open'); x.classList.add('done'); }); mFirst = null; mPairs++;
+      const r = b.getBoundingClientRect(); heartBurst(r.left + r.width / 2, r.top, 10);
+      if (mPairs === CONFIG.match.length) { $('mmsg').textContent = 'Ellaam match aachu! Nee dhaan best 💜'; cornerBlast(); complete('match'); $('matchClue').classList.remove('hide'); $('joker').classList.add('jkh'); }
+    } else { mLock = true; const a = mFirst; mFirst = null; setTimeout(() => { a.classList.remove('open'); b.classList.remove('open'); mLock = false; }, 800); }
+  });
+}
+
+/* ---- Catch hearts: cursor heart-a vechu vizhura hearts-a pidi ---- */
+const cc = $('catchCv'), cx2 = cc.getContext('2d'); let cg = null, catchDone = false, musicSeen = false;
+function catchSize() { cc.width = Math.min(600, innerWidth - 48); cc.height = Math.max(220, Math.min(520, innerHeight - 260)); }
+catchSize();
+function stopCatch() { cg = null; catchSize(); cx2.clearRect(0, 0, cc.width, cc.height); cc.style.cursor = ''; $('catchGo').classList.remove('hide'); $('catchGo').textContent = 'Start 🎮'; $('catchMsg').textContent = ''; $('catchClue').classList.add('hide'); $('catchScore').textContent = `0/${CONFIG.catchGoal}`; }
+$('catchGo').onclick = () => {
+  $('catchGo').classList.add('hide'); $('catchMsg').textContent = ''; $('catchScore').textContent = `0/${CONFIG.catchGoal}`; cc.style.cursor = 'none';
+  const W = cc.width = Math.min(600, innerWidth - 48), H = cc.height = Math.max(220, Math.min(520, innerHeight - 260)), g = cg = { px: W / 2, py: H / 2, hs: [], score: 0, f: 0 };
+  const mv = e => { const b = cc.getBoundingClientRect(), p = e.touches ? e.touches[0] : e; g.px = Math.max(0, Math.min(W, p.clientX - b.left)); g.py = Math.max(0, Math.min(H, p.clientY - b.top)); };
+  cc.onmousemove = mv; cc.ontouchmove = mv; cc.ontouchstart = mv;
+  (function loop() {
+    if (cg !== g || !live('catchCv')) return;
+    cx2.clearRect(0, 0, W, H); g.f++; if (g.f % 20 === 0) g.hs.push({ x: rnd(20, W - 20), y: -20, v: rnd(2.2, 4) });
+    cx2.textAlign = 'center'; cx2.textBaseline = 'middle'; cx2.font = '28px serif';
+    g.hs = g.hs.filter(h => { h.y += h.v; if (Math.hypot(h.x - g.px, h.y - g.py) < 34) { g.score++; $('catchScore').textContent = `${g.score}/${CONFIG.catchGoal}`; return false; } cx2.fillText('💜', h.x, h.y); return h.y < H + 20; });
+    cx2.font = '42px serif'; cx2.fillText('💙', g.px, g.py);   // cursor heart (blue)
+    if (g.score >= CONFIG.catchGoal) {
+      cg = null; cc.style.cursor = ''; catchDone = true; complete('catchCv');
+      $('catchMsg').textContent = CONFIG.catchWin; $('catchClue').classList.remove('hide'); if (!musicSeen) $('music').classList.add('hint'); cornerBlast(); $('catchGo').textContent = 'Thirumba 🎮'; $('catchGo').classList.remove('hide'); return;
+    }
+    requestAnimationFrame(loop);
+  })();
+};
+
+/* ---- Obstacle game: avan kitta poga obstacles-a thaandi vaa ---- */
+const gcv = $('gameCv'), gctx = gcv.getContext('2d'); let gameG = null; const gk = {};
+const GOBS = ['🔥', '🌵', '🐝', '⚡', '🪨'], gImg = {};
+['player', 'goal'].forEach(k => { const src = CONFIG.game[k + 'Img']; if (!src) return; const im = new Image(); im.onload = () => { gImg[k] = im; if (!gameG) stopGame(); }; im.src = src; });
+function gameSize() { gcv.width = Math.min(600, innerWidth - 48); gcv.height = Math.max(220, Math.min(480, innerHeight - 260)); }
+function gnew() { const W = gcv.width, H = gcv.height, R = Math.max(16, Math.min(24, H / 11)); return { W, H, R, level: 1, hits: 0, f: 0, banner: '', bannerT: 0, shake: 0, grace: 0, obs: [], down: false, tx: 0, ty: 0, sx: R + 10, sy: H - R - 10, gx: W - R - 10, gy: R + 10, px: R + 10, py: H - R - 10 }; }
+function gload(g) {   // level-ku obstacles: level ethanaiyo avlo athigam + vegam
+  const n = 2 + g.level * 2; g.px = g.sx; g.py = g.sy; g.grace = 70; g.obs = [];
+  for (let i = 0; i < n; i++) {
+    const t = ['h', 'v', 'b'][i % 3], sp = 1 + g.level * .4 + rnd(0, .4), d = Math.random() < .5 ? 1 : -1;
+    const o = { t, r: 14, e: GOBS[Math.floor(rnd(0, GOBS.length))], x: rnd(g.W * .2, g.W * .8), y: rnd(g.H * .2, g.H * .8), vx: 0, vy: 0 };
+    if (t === 'h') o.vx = d * sp; else if (t === 'v') o.vy = d * sp; else { o.vx = d * sp * .8; o.vy = (Math.random() < .5 ? 1 : -1) * sp * .8; }
+    g.obs.push(o);
+  }
+}
+function gFace(k, emoji, x, y, R, ring, a) {
+  gctx.save(); gctx.globalAlpha = a; gctx.beginPath(); gctx.arc(x, y, R, 0, 7); gctx.closePath();
+  const im = gImg[k];
+  if (im && im.naturalWidth) { gctx.clip(); const m = Math.min(im.naturalWidth, im.naturalHeight); gctx.drawImage(im, (im.naturalWidth - m) / 2, (im.naturalHeight - m) / 2, m, m, x - R, y - R, 2 * R, 2 * R); }
+  else { gctx.fillStyle = '#3b1a66'; gctx.fill(); gctx.font = `${R * 1.3}px serif`; gctx.textAlign = 'center'; gctx.textBaseline = 'middle'; gctx.fillStyle = '#fff'; gctx.fillText(emoji, x, y + 2); }
+  gctx.restore(); gctx.save(); gctx.globalAlpha = a; gctx.beginPath(); gctx.arc(x, y, R, 0, 7); gctx.lineWidth = 3; gctx.strokeStyle = ring; gctx.stroke(); gctx.restore();
+}
+function gdraw(g) {
+  const W = g.W, H = g.H, R = g.R, x = gctx; x.clearRect(0, 0, W, H); x.save();
+  if (g.shake > 0) { x.translate(rnd(-4, 4), rnd(-4, 4)); g.shake--; }
+  x.fillStyle = 'rgba(167,139,250,.25)'; x.beginPath(); x.arc(g.sx, g.sy, R + 10, 0, 7); x.fill();
+  const pr = R + 14 + Math.sin(g.f / 12) * 4, gr = x.createRadialGradient(g.gx, g.gy, 2, g.gx, g.gy, pr + 16);
+  gr.addColorStop(0, 'rgba(232,121,249,.7)'); gr.addColorStop(1, 'rgba(232,121,249,0)'); x.fillStyle = gr; x.beginPath(); x.arc(g.gx, g.gy, pr + 16, 0, 7); x.fill();
+  x.textAlign = 'center'; x.textBaseline = 'middle'; x.font = '28px serif'; g.obs.forEach(o => x.fillText(o.e, o.x, o.y));
+  gFace('goal', '🧑', g.gx, g.gy, R, '#E879F9', 1);
+  gFace('player', '👩', g.px, g.py, R, '#D8B4FE', g.grace > 0 && Math.floor(g.f / 6) % 2 ? .5 : 1);
+  x.restore();
+  if (g.f > 0) { x.fillStyle = '#F3E8FF'; x.font = '600 14px Poppins, sans-serif'; x.textAlign = 'left'; x.textBaseline = 'top'; x.fillText(`Level ${g.level}/${CONFIG.game.levels}   💥 ${g.hits}`, 12, 10); }
+  if (g.bannerT > 0) { x.save(); x.globalAlpha = Math.min(1, g.bannerT / 30); x.fillStyle = '#fff'; x.shadowColor = '#7C3AED'; x.shadowBlur = 14; x.font = '700 30px Poppins, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(g.banner, W / 2, H / 2); x.restore(); g.bannerT--; }
+}
+function gupdate(g) {
+  g.f++; let dx = 0, dy = 0;
+  if (gk.arrowleft || gk.a) dx--; if (gk.arrowright || gk.d) dx++; if (gk.arrowup || gk.w) dy--; if (gk.arrowdown || gk.s) dy++;
+  if (dx || dy) { const m = Math.hypot(dx, dy); g.px += dx / m * 3.4; g.py += dy / m * 3.4; }
+  else if (g.down) { const vx = g.tx - g.px, vy = g.ty - g.py, d = Math.hypot(vx, vy); if (d > 3) { const sp = Math.min(d, 4); g.px += vx / d * sp; g.py += vy / d * sp; } }
+  g.px = Math.max(g.R, Math.min(g.W - g.R, g.px)); g.py = Math.max(g.R, Math.min(g.H - g.R, g.py));
+  g.obs.forEach(o => {
+    o.x += o.vx; o.y += o.vy;
+    if (o.t === 'h') { if (o.x < o.r || o.x > g.W - o.r) o.vx *= -1; }
+    else if (o.t === 'v') { if (o.y < o.r || o.y > g.H - o.r) o.vy *= -1; }
+    else { if (o.x < g.W * .12 || o.x > g.W * .88) o.vx *= -1; if (o.y < g.H * .12 || o.y > g.H * .88) o.vy *= -1; }
+  });
+  if (g.grace > 0) g.grace--;
+  else if (g.obs.some(o => Math.hypot(o.x - g.px, o.y - g.py) < .62 * (g.R + o.r))) { g.hits++; g.px = g.sx; g.py = g.sy; g.grace = 70; g.shake = 12; g.banner = 'Aiyo! Thirumba try 😜'; g.bannerT = 60; }
+  if (Math.hypot(g.gx - g.px, g.gy - g.py) < g.R * 1.5) {
+    if (g.level >= CONFIG.game.levels) {
+      g.done = true; g.px = g.gx - g.R * 1.1; g.py = g.gy; $('gameMsg').textContent = CONFIG.game.win; $('gameGo').textContent = 'Thirumba 🎮'; $('gameGo').classList.remove('hide');
+      cornerBlast(); fireworks(); complete('gameCv');
+    } else {
+      g.level++; gload(g); g.banner = `Level ${g.level} 🔥`; g.bannerT = 90; const b = gcv.getBoundingClientRect(); burst(b.left + b.width / 2, b.top + b.height / 2, 40);
+    }
+  }
+}
+function stopGame() { gameG = null; for (const k in gk) gk[k] = false; gameSize(); gdraw(gnew()); $('gameGo').classList.remove('hide'); $('gameGo').textContent = 'Start 🎮'; $('gameMsg').textContent = ''; }
+addEventListener('keydown', e => { const k = e.key.toLowerCase(); if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd'].includes(k) && gameG && !gameG.done && live('gameCv')) { gk[k] = true; e.preventDefault(); } });
+addEventListener('keyup', e => { gk[e.key.toLowerCase()] = false; });
+$('gameGo').onclick = () => {
+  $('gameGo').classList.add('hide'); $('gameMsg').textContent = ''; gameSize();
+  const g = gameG = gnew(); g.banner = 'Level 1'; g.bannerT = 90; gload(g);
+  const setT = e => { const b = gcv.getBoundingClientRect(); g.tx = e.clientX - b.left; g.ty = e.clientY - b.top; };
+  gcv.onpointerdown = e => { g.down = true; setT(e); try { gcv.setPointerCapture(e.pointerId); } catch (_) {} };
+  gcv.onpointermove = e => { if (g.down) setT(e); };
+  gcv.onpointerup = gcv.onpointercancel = () => { g.down = false; };
+  (function loop() {
+    if (gameG !== g || !live('gameCv')) return;
+    gupdate(g); gdraw(g); if (g.done) return; requestAnimationFrame(loop);
+  })();
+};
+
+/* ---- Spin wheel ---- */
+const wc = $('wheelCv'), wx = wc.getContext('2d'); let wrot = 0, spinning = false;
+function drawWheel() {
+  const n = CONFIG.wheel.length, seg = 6.2832 / n, c = 150; wx.clearRect(0, 0, 300, 300);
+  for (let i = 0; i < n; i++) {
+    wx.beginPath(); wx.moveTo(c, c); wx.arc(c, c, 145, wrot + i * seg, wrot + (i + 1) * seg); wx.fillStyle = ['#7C3AED', '#A855F7', '#E879F9', '#6D28D9', '#C084FC', '#4C1D95'][i % 6]; wx.fill(); wx.strokeStyle = '#F3E8FF'; wx.stroke();
+    wx.save(); wx.translate(c, c); wx.rotate(wrot + (i + .5) * seg); wx.fillStyle = '#fff'; wx.font = '600 13px Poppins'; wx.textAlign = 'right'; wx.fillText(CONFIG.wheel[i].slice(0, 16), 135, 5); wx.restore();
+  }
+  wx.beginPath(); wx.arc(c, c, 16, 0, 7); wx.fillStyle = '#F3E8FF'; wx.fill();
+}
+drawWheel();
+$('spin').onclick = () => {
+  if (spinning) return; spinning = true; $('wheelRes').textContent = '';
+  const start = wrot, add = 6.2832 * (5 + Math.floor(rnd(0, 3))) + rnd(0, 6.2832), t0 = performance.now(), D = 4200;
+  (function f(t) {
+    const p = Math.min(1, (t - t0) / D); wrot = start + add * (1 - Math.pow(1 - p, 3)); drawWheel();
+    if (p < 1) return requestAnimationFrame(f);
+    spinning = false; const n = CONFIG.wheel.length, a = ((-Math.PI / 2 - wrot) % 6.2832 + 6.2832) % 6.2832;
+    $('wheelRes').textContent = CONFIG.wheel[Math.floor(a / (6.2832 / n))]; fireworks(); complete('wheelCv');
+  })(t0);
+};
+
+/* ---- Love letter ---- */
+let lt;
+function resetLetter() { clearInterval(lt); $('env').classList.remove('open', 'hide'); $('envHint').classList.remove('hide'); $('paper').classList.add('hide'); $('paper').textContent = ''; }
+$('env').onclick = () => {
+  if ($('env').classList.contains('open')) return; $('env').classList.add('open'); $('envHint').classList.add('hide'); heartBurst(innerWidth / 2, innerHeight / 2, 20);
+  setTimeout(() => {
+    $('env').classList.add('hide');   // cover maraiyum, letter mattum theriyum
+    $('paper').classList.remove('hide'); let i = 0; const t = CONFIG.letter.replace('{name}', CONFIG.name);
+    lt = setInterval(() => { $('paper').textContent = t.slice(0, ++i); if (i >= t.length) { clearInterval(lt); complete('env'); } }, 45);
+  }, 700);
+};
+
+/* ---- Night sky: heart constellation + shooting star ---- */
+const sk = $('skyCv'), sctx = sk.getContext('2d'); let skyId = 0;
+function startSky() {
+  skyOdd = false; clearHunt(); const W = sk.width = Math.min(420, innerWidth - 48), H = sk.height = 340, sc = Math.min(W / 36, 9), id = ++skyId; let sp = 0, star = null;
+  const pts = Array.from({ length: 26 }, (_, i) => { const t = i / 26 * 6.2832; return { x: W / 2 + sc * 16 * Math.sin(t) ** 3, y: 130 - sc * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) }; });
+  sk._star = () => star; sk._kill = () => { star = null; };
+  (function tick() {
+    if (id !== skyId || !live('skyCv')) return;
+    sctx.clearRect(0, 0, W, H); sp = Math.min(27, sp + .1);
+    sctx.strokeStyle = 'rgba(216,180,254,.7)'; sctx.lineWidth = 1.5; sctx.beginPath();
+    pts.forEach((p, i) => { if (i <= Math.floor(sp)) i ? sctx.lineTo(p.x, p.y) : sctx.moveTo(p.x, p.y); }); if (sp >= 26) sctx.closePath(); sctx.stroke();
+    pts.forEach((p, i) => { if (i <= sp) { sctx.fillStyle = '#fff'; sctx.shadowColor = '#E879F9'; sctx.shadowBlur = 14; sctx.beginPath(); sctx.arc(p.x, p.y, 3 + Math.sin(Date.now() / 300 + i), 0, 7); sctx.fill(); } }); sctx.shadowBlur = 0;
+    sctx.fillStyle = '#D8B4FE'; sctx.font = '700 34px "Dancing Script"'; sctx.textAlign = 'center'; if (sp > 20) sctx.fillText(CONFIG.name + ' 💜', W / 2, 318);
+    if (!star && Math.random() < .02) star = { x: -20, y: rnd(30, 120), vx: rnd(1.4, 2), vy: rnd(.5, .9) };   // slow star
+    if (star) { star.x += star.vx; star.y += star.vy; const g = sctx.createLinearGradient(star.x, star.y, star.x - 70, star.y - 30); g.addColorStop(0, '#fff'); g.addColorStop(1, 'transparent'); sctx.strokeStyle = g; sctx.lineWidth = 3; sctx.beginPath(); sctx.moveTo(star.x, star.y); sctx.lineTo(star.x - 70, star.y - 30); sctx.stroke(); sctx.fillStyle = '#fff'; sctx.beginPath(); sctx.arc(star.x, star.y, 7, 0, 7); sctx.fill(); sctx.strokeStyle = 'rgba(232,121,249,.6)'; sctx.lineWidth = 2; sctx.beginPath(); sctx.arc(star.x, star.y, 18 + Math.sin(Date.now() / 120) * 4, 0, 7); sctx.stroke(); if (star.x > W + 30) star = null; }
+    requestAnimationFrame(tick);
+  })();
+}
+sk.onclick = e => {
+  const b = sk.getBoundingClientRect(), x = e.clientX - b.left, y = e.clientY - b.top, st = sk._star && sk._star();
+  if (st) { sk._kill();   // star theriyum bodhu canvas la enga click pannaalum wish aagum
+    heartBurst(e.clientX, e.clientY, 30); fireworks();
+    if (!skyOdd) { skyOdd = true; $('skyMsg').textContent = CONFIG.wishMsg; setTimeout(startHunt, 1500); complete('skyCv'); } }
+  else if (!skyOdd) $('skyMsg').textContent = 'Shooting star-a paathu click pannu 🌠';
+};
+
+/* ---- Shooting star-ku appuram: ellaa emoji-um nagarum, oru emoji mattum nagaraadhu ---- */
+let skyOdd = false;
+function clearHunt() { const h = $('hunt'); if (h) h.remove(); }
+function startHunt() {   // ellaa emoji-um nagarum; clue la irukkura 👀 click panna video varum
+  if (!live('skyCv')) return;
+  clearHunt(); const layer = document.createElement('div'); layer.id = 'hunt'; layer.style.cssText = 'position:fixed;inset:0;z-index:55;pointer-events:none;overflow:hidden';
+  const movers = ['⭐', '✨', '🌸', '🌷', '💫', '🌟', '🌼'];
+  layer.innerHTML = Array.from({ length: 28 }, (_, i) => `<span class="mv" style="left:${rnd(3, 94)}%;top:${rnd(10, 78)}%;font-size:32px;--x:${rnd(-170, 170)}px;--y:${rnd(-130, 130)}px;animation-duration:${rnd(4, 9)}s;animation-delay:-${rnd(0, 6)}s">${movers[i % movers.length]}</span>`).join('');
+  document.body.appendChild(layer);
+  $('skyMsg').innerHTML = 'Ellaa emoji-um nagaruthu... oru emoji mattum nagaraama nikkudhu <span id="eyeClue" role="button" aria-label="Eyes clue" class="beat" style="display:inline-block;cursor:pointer">👀</span> Adhai click pannu!';
+  $('eyeClue').onclick = showVideo;
+}
+
+/* ---- Cake + candles (mic) ---- */
+let micStream = null, micOn = false;
+$('candles').innerHTML = Array.from({ length: 5 }, () => '<div class="candle"><span class="flame"></span></div>').join('');
+function blowOne() { const f = [...document.querySelectorAll('.flame:not(.out)')]; if (!f.length) return; f[0].classList.add('out'); if (f.length === 1) cakeDone(); }
+function cakeDone() {
+  $('cakeWrap').classList.add('dark'); $('cakeMsg').textContent = `Wish pannita? ✨ Candles anaichitta 💨`; micOn = false;
+  setTimeout(() => { $('cakeMsg').textContent = 'Ippo cake cut pannalam 🔪'; $('cake').classList.add('cut1'); }, 1500);
+  setTimeout(() => { $('cake').classList.add('cut2'); complete('cake'); $('cakeMsg').textContent = `Happy Birthday ${CONFIG.name} 🎂 Cake cut aachu! 💜`; cornerBlast(); fireworks(); heartBurst(innerWidth / 2, innerHeight / 2, 40); }, 2900);
+}
+function resetCake() { $('cake').classList.remove('cut1', 'cut2'); micOn = false; if (micStream) micStream.getTracks().forEach(t => t.stop()); micStream = null; document.querySelectorAll('.flame').forEach(f => f.classList.remove('out')); $('cakeWrap').classList.remove('dark'); $('cakeMsg').textContent = 'Mic on pannitu, nalla oru oodhu viduda 😘'; }
+document.querySelectorAll('.candle').forEach(c => c.onclick = () => { c.querySelector('.flame').classList.add('out'); if (!document.querySelector('.flame:not(.out)')) cakeDone(); });
+$('blow').onclick = () => { let k = 0; const t = setInterval(() => { blowOne(); if (++k >= 5) clearInterval(t); }, 250); };
+$('mic').onclick = async () => {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { $('cakeMsg').textContent = 'Indha browser/link la mic work aagaadhu (https venum). Candle-a click pannu or 💨 Oodhu button 👆'; $('blow').classList.add('beat'); return; }
+  try {
+    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const ac = new (window.AudioContext || window.webkitAudioContext)(), an = ac.createAnalyser(); ac.createMediaStreamSource(micStream).connect(an);
+    const d = new Uint8Array(an.fftSize); micOn = true; $('cakeMsg').textContent = 'Ippo oodhu da, nalla gaali vidu 💨'; let hot = 0;
+    (function chk() {
+      if (!micOn) return ac.close();
+      an.getByteTimeDomainData(d); let m = 0; for (const v of d) m = Math.max(m, Math.abs(v - 128));
+      if (m > 55) { if (++hot > 5) { hot = 0; blowOne(); } } else hot = Math.max(0, hot - 1);
+      requestAnimationFrame(chk);
+    })();
+  } catch (e) { $('cakeMsg').textContent = e.name === 'NotAllowedError' ? 'Mic block aagirukku. Address bar la 🔒 click panni Microphone Allow pannu, illa candle-a click pannu 👆' : 'Mic kidaikkala. Candle-a click pannu or 💨 Oodhu button 👆'; $('blow').classList.add('beat'); }
+};
+
+/* ---- Name blast: fireworks text ---- */
+$('nameGo').onclick = () => {
+  const r = $('nameGo').getBoundingClientRect(); $('nameGo').style.visibility = 'hidden';
+  textFireworks(CONFIG.coupleLines.map(t => t.replace('{him}', CONFIG.him).replace('{name}', CONFIG.name)), [{ x: r.left + r.width / 2, y: r.top + r.height / 2 }], () => { $('nameGo').style.visibility = ''; complete('nameGo'); });
+};
+
+/* ---- Gift box + real gift clue ---- */
+function resetGift() { $('giftHint').textContent = ''; $('giftTypeBox').classList.add('hide'); $('giftType').value = ''; $('lid').classList.remove('up'); $('giftCard').classList.add('hide'); $('code').value = ''; $('placeMsg').textContent = ''; }
+function openGift() {
+  if ($('lid').classList.contains('up')) return; $('lid').classList.add('up'); $('giftHint').textContent = '💜 Correct! Gift thirandhuduchu'; complete('gift');
+  $('giftMsg').textContent = CONFIG.gift.msg; $('clue').textContent = CONFIG.gift.clue;
+  setTimeout(() => { $('giftCard').classList.remove('hide'); cornerBlast(); fireworks(); }, 600);
+}
+const GIFT_OK = /(love|luv)\s*(you|u)\s*,?\s*(mama|mamma|maama)/i;
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+function giftFallback(msg) { $('giftHint').textContent = msg; $('giftTypeBox').classList.remove('hide'); }
+function listenGift() {
+  if ($('lid').classList.contains('up')) return;
+  if (!SR) return giftFallback('Indha browser la voice work aagala. Keezha type pannu 👇');
+  const r = new SR(); r.lang = 'en-IN'; r.interimResults = false; r.maxAlternatives = 5; let ok = false;
+  $('giftHint').textContent = '🎤 Ippo sollu: "I love you mama"...';
+  r.onresult = e => { const alts = [...e.results[0]].map(a => a.transcript); if (alts.some(t => GIFT_OK.test(t))) { ok = true; openGift(); } else $('giftHint').textContent = `Naan kettadhu: "${alts[0]}". Thirumba sollu 😜`; };
+  r.onerror = e => { if (['not-allowed', 'service-not-allowed', 'network', 'audio-capture'].includes(e.error)) giftFallback('Mic/voice work aagala. Keezha type pannu 👇'); else $('giftHint').textContent = 'Kekkala, thirumba sollu 🎤'; };
+  r.onend = () => { if (!ok && $('giftHint').textContent.startsWith('🎤 Ippo')) $('giftHint').textContent = 'Kekkala, 🎤 button-a thirumba click pannu'; };
+  try { r.start(); } catch (e) { giftFallback('Voice start aagala. Keezha type pannu 👇'); }
+}
+$('gift').onclick = listenGift; $('giftMic').onclick = listenGift;
+$('giftType').onkeydown = e => { if (e.key === 'Enter') { if (GIFT_OK.test($('giftType').value)) openGift(); else $('giftHint').textContent = '"I love you mama" nu type pannu 😜'; } };
+$('codeGo').onclick = () => {
+  if ($('code').value.trim().toLowerCase() === CONFIG.gift.code.toLowerCase()) { $('placeMsg').textContent = CONFIG.gift.place; cornerBlast(); heartBurst(innerWidth / 2, innerHeight / 2, 40); }
+  else { $('placeMsg').textContent = 'Illa da, innum yosi 😜'; }
+};
+
+/* ---- Hidden secret: hero title 5 times tap ---- */
+let secretTaps = 0;
+$('typed').onclick = () => {
+  if (++secretTaps < 5) return; secretTaps = 0;
+  const html = quizPerfect
+    ? `<div class="glass rounded-3xl p-8 max-w-md text-center"><p class="text-5xl mb-3">🎁</p><p class="font-display text-4xl text-gold mb-3">Surprise!</p><p class="text-lg">${CONFIG.secret}</p><button id="backBtn" class="btn mt-6">Meethi pages-ku thirumba po ➡</button></div>`
+    : `<div class="glass rounded-3xl p-8 max-w-md text-center"><p class="text-5xl mb-3">🤫</p><p class="text-lg">Modhalla Quiz page-la ellaa answer-um correct-a sollu, appuram thirumba vaa 😜</p><p class="text-white/50 text-sm mt-4">(close panna click pannu)</p></div>`;
+  $('lb').innerHTML = html; $('lb').classList.remove('hide');
+  if ($('backBtn')) $('backBtn').onclick = e => { e.stopPropagation(); $('lb').classList.add('hide'); showPage(returnPage != null ? Math.min(returnPage + 1, pages.length - 1) : 1); returnPage = null; };
+  if (quizPerfect) { cornerBlast(); fireworks(); heartBurst(innerWidth / 2, innerHeight / 2, 40); }
+};
+
+$('heartCall').onclick = () => {   // heart click -> direct video call
+  heartBurst(innerWidth / 2, innerHeight / 2, 40); cornerBlast();
+  const url = CONFIG.callLink || (CONFIG.jitsiRoom ? `https://meet.jit.si/${encodeURIComponent(CONFIG.jitsiRoom)}` : `https://wa.me/${CONFIG.phone}?text=${encodeURIComponent(CONFIG.callText)}`);
+  $('callHint').textContent = CONFIG.callLink || CONFIG.jitsiRoom ? 'Camera + mic Allow pannunga 💜' : 'WhatsApp thirandhadhum mela irukkura 📹 video icon-a tap pannunga 💜';
+  $('callOv').classList.remove('hide'); window.open(url, '_blank');
+};
+$('callClose').onclick = () => $('callOv').classList.add('hide');
+/* ---- Final extras: video call, spotify, QR, "I love you" ticker ---- */
+if (CONFIG.spotify) $('spot').innerHTML = `<iframe src="${CONFIG.spotify}" width="100%" height="152" frameborder="0" allow="encrypted-media" loading="lazy" style="border-radius:16px"></iframe>`;
+if (CONFIG.siteUrl && typeof QRCode !== 'undefined') { $('qrBox').classList.remove('hide'); new QRCode($('qr'), { text: CONFIG.siteUrl, width: 140, height: 140, colorDark: '#2D1650', colorLight: '#F3E8FF' }); }
+/* ---- Song-synced "I love you" in 17 languages ---- */
+const SYNC = location.search.includes('sync'); let syncT = [];
+const LW = []; CONFIG.songLines.forEach((ln, li) => ln.forEach((c, k) => LW.push({ ...c, line: li, first: k === 0 })));
+function loveCues() {   // word-ku start time (analysis la irundhu)
+  if (CONFIG.songCues.length === LW.length) return CONFIG.songCues;
+  return LW.map((_, k) => +(CONFIG.songStart + k * CONFIG.songStep).toFixed(2));
+}
+const song = $('loveSong'); let loveRAF = 0, loveIdx = -1, loveT0 = 0, loveVirtual = false, bgmWas = false;
+function lyricShow(i) {   // karaoke: oru line-la words ovvonna varum, line mudinja history-ku pogum
+  const c = LW[i]; if (!c) return;
+  if (c.first) {
+    const prev = [...$('lyric').querySelectorAll('.lw')].map(e => e.dataset.w).join(' ');
+    if (prev) $('lyChips').insertAdjacentHTML('beforeend', `<div class="glass rounded-full px-4 py-1 text-sm w-fit mx-auto">${prev}</div>`);
+    $('lyric').innerHTML = '<div id="lyLine" class="flex flex-wrap justify-center gap-x-5 gap-y-3"></div>'; heartBurst(innerWidth / 2, innerHeight * .4, 10);
+  }
+  $('lyLine').insertAdjacentHTML('beforeend', `<div class="lw text-center" data-w="${c.w}"><div class="lyw">${[...c.w].map((ch, k) => `<span class="ch" style="animation-delay:${k * 25}ms">${ch}</span>`).join('')}</div>${c.n ? `<div class="text-xl text-white/85">${c.n}</div>` : ''}${c.lang ? `<div class="text-xs uppercase tracking-widest text-gold mt-1">${c.lang}</div>` : ''}</div>`);
+}
+function stopLove() {
+  cancelAnimationFrame(loveRAF); song.pause(); song.onended = null; song.onerror = null;
+  if (bgmWas) { $('bgm').play().catch(() => {}); bgmWas = false; }
+}
+function startLove() {
+  stopLove(); loveIdx = -1; syncT = []; loveVirtual = !CONFIG.loveSong; const cues = loveCues();
+  $('syncBox').classList.toggle('hide', !SYNC); $('syncOut').value = ''; $('lyChips').innerHTML = ''; $('lyEnd').textContent = ''; $('loveBtn').classList.add('hide');
+  $('lyric').innerHTML = '<span class="text-white/60 text-xl">🎧 Song start aagudhu...</span>';
+  const bgm = $('bgm'); bgmWas = !!bgm.getAttribute('src') && !bgm.paused; if (bgmWas) bgm.pause();
+  const finish = () => { complete('lyric'); $('lyEnd').textContent = `17 mozhi... ore artham: Kaadhal 💜 I love you ${CONFIG.name}`; cornerBlast(); heartBurst(innerWidth / 2, innerHeight / 2, 40); };
+  if (!loveVirtual) {
+    song.src = CONFIG.loveSong; song.currentTime = 0;
+    song.onerror = () => { loveVirtual = true; loveT0 = performance.now(); };   // song file illa na silent-a words mattum
+    song.onended = finish;
+    const pr = song.play(); if (pr && pr.catch) pr.catch(() => $('loveBtn').classList.remove('hide'));
+  } else loveT0 = performance.now();
+  (function tick() {
+    const t = loveVirtual ? (performance.now() - loveT0) / 1000 : song.currentTime;
+    if (!SYNC) while (loveIdx + 1 < cues.length && t >= cues[loveIdx + 1] - .05) lyricShow(++loveIdx);
+    if (loveVirtual && t > cues[cues.length - 1] + 1.5 && !$('lyEnd').textContent) finish();
+    loveRAF = requestAnimationFrame(tick);
+  })();
+}
+function syncTap() {   // ?sync mode: word paadum bodhu tap/Space
+  if (!SYNC || !live('lyric') || syncT.length >= LW.length) return;
+  syncT.push(+song.currentTime.toFixed(2)); if (LW[syncT.length - 1].first) $('lyric').innerHTML = ''; lyricShow(syncT.length - 1);
+  $('syncInfo').textContent = syncT.length < LW.length ? `Adutha word: ${LW[syncT.length].w} (${syncT.length}/${LW.length})` : 'Mudinjadhu! Keezha irukkura line-a copy panni CONFIG la paste pannunga 👇';
+  $('syncOut').value = `songCues: [${syncT.join(', ')}],`;
+}
+$('syncTap').onclick = syncTap;
+addEventListener('keydown', e => { if (e.code === 'Space' && SYNC && live('lyric')) { e.preventDefault(); syncTap(); } });
+$('loveBtn').onclick = () => { song.play().then(() => $('loveBtn').classList.add('hide')).catch(() => {}); };
+
+/* ---------- Voice / video / friends ---------- */
+if (CONFIG.voice) $('voice').src = CONFIG.voice; else $('voice').classList.add('hide');
+if (CONFIG.video) { $('video').src = CONFIG.video; $('video').classList.remove('hide'); }
+$('friends').innerHTML = CONFIG.friends.map(f => `<div class="rv glass rounded-2xl p-5"><p class="text-gold font-bold mb-1">${f.who}</p><p class="text-white/85">${f.msg}</p></div>`).join('');
+
+/* ---------- Balloons ---------- */
+const bc = ['#E879F9', '#D8B4FE', '#A78BFA', '#8B5CF6', '#C084FC', '#7C3AED'];
+let popped = 0;
+function popWord(t, x, y, mega) {   // balloon blast la irundhu word perusa varum
+  const w = document.createElement('div'); w.className = 'wordpop' + (mega ? ' megaword' : ''); w.textContent = t;
+  if (t.length > 14) w.style.fontSize = 'clamp(2rem, 7vw, 3.4rem)';   // sentence na konjam small
+  w.style.left = (mega ? innerWidth / 2 : Math.max(innerWidth * .3, Math.min(innerWidth * .7, x))) + 'px';
+  w.style.top = (mega ? innerHeight * .45 : Math.max(130, y)) + 'px';
+  document.body.appendChild(w); setTimeout(() => w.remove(), mega ? 7000 : 3300);
+}
+const tf = $('tf'), tfx = tf.getContext('2d'); let tfId = 0, bOrigins = [];
+function textFireworks(lines, origins, done) {   // sparks paranthu vandhu clear-a (bold font) ezhuthu aagum
+  const W = tf.width = innerWidth, H = tf.height = innerHeight, id = ++tfId;
+  const off = document.createElement('canvas'); off.width = W; off.height = H; const o = off.getContext('2d');
+  o.textAlign = 'center'; o.textBaseline = 'middle'; o.fillStyle = '#fff'; o.strokeStyle = '#fff'; o.lineJoin = 'round';
+  let s1 = Math.min(130, W * .15, H * .15);
+  lines.forEach((t, k) => {
+    let size = k ? s1 * .72 : s1;
+    do { o.font = `700 ${size}px Poppins, Arial, sans-serif`; size -= 3; } while (o.measureText(t).width > W * .9 && size > 16);
+    if (!k) s1 = size + 3;
+    o.lineWidth = size * .07; const y = H * (lines.length === 3 ? [.3, .5, .7][k] : (k ? .6 : .4));
+    o.strokeText(t, W / 2, y); o.fillText(t, W / 2, y);
+  });
+  const d = o.getImageData(0, 0, W, H).data, step = 4, cols = ['#F5D0FE', '#E879F9', '#C084FC', '#fff'], ps = [];
+  for (let y = 0; y < H; y += step) for (let x = 0; x < W; x += step) if (d[(y * W + x) * 4 + 3] > 128) {
+    const og = origins.length ? origins[ps.length % origins.length] : { x: W / 2, y: H };
+    ps.push({ x: og.x, y: og.y, tx: x, ty: y, c: cols[ps.length % 4], dl: rnd(0, 40), vx: rnd(-6, 6), vy: rnd(-8, 3) });
+  }
+  document.body.classList.add('tfon'); $('tfBack').style.opacity = 1;
+  let f = 0;
+  const end = () => { tfx.clearRect(0, 0, W, H); $('tfBack').style.opacity = 0; document.body.classList.remove('tfon'); };
+  (function loop() {
+    if (id !== tfId) return;
+    tfx.clearRect(0, 0, W, H); f++;
+    if (f > 90 && f < 340) { tfx.globalAlpha = Math.min(1, (f - 90) / 50) * (f > 300 ? (340 - f) / 40 : 1); tfx.drawImage(off, 0, 0); }   // crisp text keezha, clear-a padikka
+    ps.forEach(p => {
+      if (f > p.dl && f < 300) { p.x += (p.tx - p.x) * .08; p.y += (p.ty - p.y) * .08; }
+      else if (f >= 300) { p.vy += .22; p.x += p.vx; p.y += p.vy; }
+      tfx.globalAlpha = f >= 300 ? Math.max(0, 1 - (f - 300) / 40) : f < p.dl ? 0 : .85;
+      tfx.fillStyle = p.c; tfx.beginPath(); tfx.arc(p.x, p.y, 1.9, 0, 7); tfx.fill();
+    });
+    tfx.globalAlpha = 1;
+    if (f < 345) requestAnimationFrame(loop); else { end(); done && done(); }
+  })();
+}
+function finalBlast() {
+  const lines = CONFIG.fireworkLines.map(t => t.replace('{name}', CONFIG.name)); $('wish').textContent = '';
+  textFireworks(lines, bOrigins, () => { cornerBlast(); fireworks(); });
+}
+function buildBalloons() {
+popped = 0; bOrigins = []; tfId++; $('tfBack').style.opacity = 0; tfx.clearRect(0, 0, tf.width, tf.height); document.body.classList.remove('tfon'); $('balloons').innerHTML = ''; $('wish').textContent = '';
+CONFIG.balloonWishes.forEach((raw, i) => {
+  const w = raw.replace('{name}', CONFIG.name);
+  const b = document.createElement('button'); b.className = 'balloon text-4xl'; b.textContent = ['❤️', '⭐', '🌸', '🎁', '🦋'][i % 5]; b.setAttribute('aria-label', 'Balloon');
+  b.style.cssText = `background:radial-gradient(circle at 30% 28%,rgba(255,255,255,.8),rgba(255,255,255,0) 24%),${['#EF4444', '#F59E0B', '#22C55E', '#38BDF8', '#EC4899'][i % 5]};animation-delay:${i * .4}s;width:92px;height:114px`;
+  b.onclick = () => {
+    if (b.classList.contains('pop')) return;
+    const r = b.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    b.classList.add('pop'); burst(x, y, 140, 18); heartBurst(x, y, 14); popWord(w, x, y);
+    bOrigins.push({ x, y }); $('wish').textContent = w;
+    setTimeout(() => b.style.visibility = 'hidden', 450);
+    if (++popped === CONFIG.balloonWishes.length) { complete('balloons'); setTimeout(finalBlast, 1800); }
+  };
+  $('balloons').appendChild(b);
+});
+}
+buildBalloons();
+$('egg').onclick = () => { $('egg').textContent = `Naan unna romba love panren, ${CONFIG.name} ❤️`; $('egg').className = 'mt-12 text-xl text-rose'; fireworks(); };
+
+/* ---------- Final: door ---------- */
+$('reveal').onclick = () => {
+  $('reveal').classList.add('hide'); sec('reveal').querySelector('h2').classList.add('hide'); $('scene').classList.remove('hide');
+  setTimeout(() => $('door').classList.add('open'), 400);
+  setTimeout(() => { fireworks(); $('final').classList.remove('hide'); $('heartCall').classList.remove('hide'); $('extras').classList.remove('hide'); }, 2200);
+};
+$('music').onclick = () => {
+  if (catchDone && live('catchCv')) {   // 20 hearts pidichuttu music icon click -> video
+    musicSeen = true; $('music').classList.remove('hint');
+    showVideo();
+  }
+  const a = $('bgm'); if (!a.src) return; a.paused ? a.play() : a.pause();
+};
+
+/* ---------- Hearts: cursor trail, floating, bursts ---------- */
+const HEARTS = ['💜', '💖', '💗', '💕', '💞'];
+const CHEARTS = ['❤️', '🧡', '💛', '💚', '💙', '💜', '🩷', '🩵', '💖', '💗'];
+function heart(x, y, big) {
+  const h = document.createElement('span'); h.className = 'heart'; h.textContent = CHEARTS[Math.floor(rnd(0, CHEARTS.length))];
+  h.style.cssText = `left:${x}px;top:${y}px;font-size:${big ? rnd(26, 46) : rnd(20, 32)}px;--dx:${rnd(-70, 70)}px;--r:${rnd(-45, 45)}deg`;
+  document.body.appendChild(h); setTimeout(() => h.remove(), 1900);
+}
+function heartBurst(x, y, n = 14) { for (let i = 0; i < n; i++) setTimeout(() => heart(x, y, true), i * 30); }
+let lastH = 0;
+addEventListener('mousemove', e => { if ($('site').classList.contains('hide')) return; const t = Date.now(); if (t - lastH > 90) { lastH = t; heart(e.clientX, e.clientY); } });
+const FLOATS = ['🧸', '🐻', '🐻‍❄️', '🌸', '🌷', '🌹', '💐', '✨', '💫', '💜', '🦋', '🧸'];
+setInterval(() => {
+  const f = document.createElement('span'); f.className = 'fheart'; f.textContent = FLOATS[Math.floor(rnd(0, FLOATS.length))];
+  f.style.cssText = `left:${rnd(0, 96)}vw;font-size:${rnd(20, 44)}px;--sx:${rnd(-90, 90)}px;animation-duration:${rnd(7, 13)}s`;
+  document.body.appendChild(f); setTimeout(() => f.remove(), 13500);
+}, 700);
+
+/* ---------- "Next page" button at bottom of every page ---------- */
+const pages = [...document.querySelectorAll('#site > section')]; let cur = 0;
+pages.forEach((sec, i) => { if (i > 0) sec.classList.add('hide'); });   // oru neram-la oru page mattum
+function refreshPage(n) {   // ovvoru thadavai page open aagum bodhum fresh-a start aagum
+  const pg = pages[n];
+  pg.querySelectorAll('.rv').forEach((e, k) => { e.classList.remove('in'); e.style.transitionDelay = Math.min(k, 12) * 90 + 'ms'; });
+  if (pg.querySelector('#typed')) { startTyping(); lanterns(); }
+  if (pg.querySelector('#book')) { bi = 0; bookUpdate(); }
+  if (pg.querySelector('#askArea')) resetAsk();
+  if (pg.querySelector('#balloons')) { buildBalloons(); $('egg').textContent = 'psst... idha click pannu 🤫'; $('egg').className = 'mt-12 text-sm text-white/30 cursor-pointer select-none'; }
+  if (pg.querySelector('#reveal')) { pg.querySelector('h2').classList.remove('hide'); $('reveal').classList.remove('hide'); $('scene').classList.add('hide'); $('door').classList.remove('open'); $('final').classList.add('hide'); }
+  pg.querySelectorAll('canvas.scratch').forEach(c => c._reset && c._reset());
+  if (pg.querySelector('#quiz')) { qi = 0; qs = 0; renderQuiz(); }
+  if (pg.querySelector('#match')) buildMatch();
+  if (pg.querySelector('#catchCv')) stopCatch();
+  if (pg.querySelector('#gameCv')) stopGame();
+  if (pg.querySelector('#wheelCv')) { $('wheelRes').textContent = ''; }
+  if (pg.querySelector('#env')) resetLetter();
+  if (pg.querySelector('#skyCv')) { $('skyMsg').textContent = ''; startSky(); }
+  if (pg.querySelector('#cake')) resetCake();
+  if (pg.querySelector('#nameGo')) { tfId++; $('tfBack').style.opacity = 0; tfx.clearRect(0, 0, tf.width, tf.height); document.body.classList.remove('tfon'); $('nameGo').style.visibility = ''; }
+  if (pg.querySelector('#gift')) resetGift();
+  if (pg.querySelector('#extras')) $('extras').classList.add('hide');
+  if (pg.querySelector('#lyric')) startLove();
+  $('voice').pause();
+}
+function showPage(n) {
+  clearHunt();
+  if (pages[cur].querySelector('#lyric')) stopLove();
+  resetYes(); pages[cur].classList.add('hide'); cur = n;
+  document.body.classList.toggle('nohearts', !!pages[n].querySelector('#catchCv, #gameCv'));
+  const pg = pages[n]; pg.classList.remove('hide'); refreshPage(n);
+  pg.classList.add('pg-show'); setTimeout(() => pg.classList.remove('pg-show'), 1100);
+  scrollTo(0, 0); dispatchEvent(new Event('scroll')); updateNav();
+  document.body.classList.toggle('clean', !!pg.querySelector('#env, #cake, #balloons, #nameGo'));
+}
+const LOCKS = { book: 'Ella pages paaru', frames: 'Ella frame click', cards: 'Ella card scratch', quiz: 'Quiz mudi', match: 'Ellaa pair match', catchCv: '20 hearts pidi', wheelCv: 'Wheel spin pannu', askArea: 'Yes click pannu', env: 'Letter padi', skyCv: 'Star-a click pannu', cake: 'Cake cut pannu', balloons: '5 balloon thodu', nameGo: 'Blast pannu', gameCv: 'En kitta vaa', gift: 'Gift thira', lyric: 'Song mudiya wait' };
+const SCROLLP = ['typed', 'timeline', 'friends'];   // task illa pages: keezha varai scroll pannanum
+function pageLock(pg) {   // null = unlocked, illana button-la kaattura text
+  if (completed.has(pg)) return null;
+  for (const id in LOCKS) if (pg.querySelector('#' + id)) return LOCKS[id];
+  if (SCROLLP.some(id => pg.querySelector('#' + id)) && innerHeight + scrollY < document.documentElement.scrollHeight - 150) return 'Keezha scroll pannu';
+  return null;
+}
+function updateNav() {   // keezha eppovum theriyum Previous / Next
+  $('pvBtn').disabled = cur === 0;
+  const lastPg = cur === pages.length - 1, lock = pageLock(pages[cur]);
+  $('nxBtn').disabled = lastPg || !!lock; $('nxBtn').textContent = lock ? '🔒 ' + lock : 'Next page ➡';
+  $('nxBtn').classList.toggle('beat', !lastPg && !lock); $('pgNo').textContent = `${cur + 1}/${pages.length}`;
+}
+addEventListener('scroll', () => updateNav());
+$('pvBtn').onclick = () => cur > 0 && showPage(cur - 1);
+$('nxBtn').onclick = () => { if (cur < pages.length - 1 && !pageLock(pages[cur])) { const r = $('nxBtn').getBoundingClientRect(); heartBurst(r.left + r.width / 2, r.top, 10); showPage(cur + 1); } };
+updateNav();
+
+/* ---------- Scroll reveal ---------- */
+function observe() {
+  const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), { threshold: .15 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+}
+
+/* ---------- Confetti + fireworks ---------- */
+const cv = $('fx'), cx = cv.getContext('2d'); let bits = [], run = false;
+const fit = () => { cv.width = innerWidth; cv.height = innerHeight; }; fit(); addEventListener('resize', fit);
+function burst(x, y, n = 60, spread = 12) {
+  const cols = ['#D8B4FE', '#E879F9', '#A78BFA', '#8B5CF6', '#fff'];
+  for (let i = 0; i < n; i++) { const a = rnd(0, 6.28), s = rnd(2, spread); bits.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 2, s: rnd(3, 7), c: cols[i % 5], life: rnd(70, 130) }); }
+  if (!run) { run = true; loop(); }
+}
+function cannon(x, y, dir, n = 70) {
+  const cols = ['#D8B4FE', '#E879F9', '#A78BFA', '#fff', '#F5D0FE', '#C084FC'];
+  for (let i = 0; i < n; i++) { const a = dir + rnd(-.55, .55), sp = rnd(6, 20); bits.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, s: rnd(4, 9), c: cols[i % 6], life: rnd(80, 150) }); }
+  if (!run) { run = true; loop(); }
+}
+function cornerBlast() {   // 4 corner-layum BOOM!
+  for (let w = 0; w < 6; w++) setTimeout(() => {
+    const W = innerWidth, H = innerHeight, f = $('flash');
+    cannon(0, 0, .78); cannon(W, 0, 2.36); cannon(0, H, -.78); cannon(W, H, -2.36);
+    if (w % 2 === 0) { f.classList.remove('boom'); void f.offsetWidth; f.classList.add('boom'); }
+  }, w * 450);
+}
+function fireworks() { for (let i = 0; i < 6; i++) setTimeout(() => burst(rnd(innerWidth * .15, innerWidth * .85), rnd(innerHeight * .15, innerHeight * .5), 70, 9), i * 350); }
+function loop() {
+  cx.clearRect(0, 0, cv.width, cv.height); bits = bits.filter(p => p.life-- > 0);
+  bits.forEach(p => { p.x += p.vx; p.y += p.vy; p.vy += .18; p.vx *= .99; cx.globalAlpha = Math.min(1, p.life / 40); cx.fillStyle = p.c; cx.beginPath(); cx.arc(p.x, p.y, p.s / 2, 0, 7); cx.fill(); });
+  bits.length ? requestAnimationFrame(loop) : (run = false);
+}
+</script>
+</body>
+</html>
